@@ -18,12 +18,12 @@ flowchart LR
     F["Frontends (1 par membre)"] -->|HTTP JSON| API["FastAPI - backend d'équipe"]
     API -->|"candidats, projets"| M[("MongoDB")]
     API -->|"graphe de compétences"| N[("Neo4j")]
-    %% TODO : complétez / corrigez ce schéma selon VOS choix
+    %% TODO : complétez / corrigez ce sc
 ```
 
 TODO : en 3 à 5 lignes, le rôle de chaque base dans votre portfolio.
 La base Mongo permet de gerer les collections profil et projets
-La basse Neo permet peremt de gerer les liens entre les compétences et les projets 
+La base Neo permet peremt de gerer les liens entre les compétences et les projets les liens entre le profil et les projets 
 
 ## 2. Les requêtes à servir
 
@@ -41,10 +41,33 @@ La basse Neo permet peremt de gerer les liens entre les compétences et les proj
 
 ## 3. Modèle MongoDB
 
-### 3.1 Collection `candidats` - pattern TODO (*Embedding* ? *Referencing* ?)
+### 3.1 Collection `candidats` - pattern TODO (*Embedding* )
+```
+{
+  "candidat_slug": "exemple-candidat",
+  "prenom": "Alice",
+  "nom": "Martin",
+  "titre": "Élève-ingénieure Big Data — ESIGELEC",
+  "liens": { "github": "https://github.com/exemple", "linkedin": "https://www.linkedin.com/in/exemple" },
+  "experiences": [
+    {
+      "entreprise": "Entreprise X",
+      "poste": "Stagiaire Data Engineer",
+      "debut": "2026-04",
+      "fin": "2026-08",
+      "description": "Pipeline d'ingestion…",
+      "competences": ["python", "mongodb", "airflow"]
+    }
+  ],
+  "formations": [
+    { "ecole": "ESIGELEC", "diplome": "Cycle ingénieur — Big Data (BDTN)", "debut": "2024-09", "fin": "2027-06" }
+  ],
+  "competences": [
+    { "skill_slug": "mongodb", "nom": "MongoDB", "domaine": "bases-de-donnees", "niveau": 3 },
+    { "skill_slug": "python", "nom": "Python", "domaine": "langages", "niveau": 4 }
+  ]
+}
 
-```json
-TODO : un document d'exemple complet
 ```
 
 **Justification** (cardinalité bornée ou non, lecture en une requête, fréquence de mise à jour) : TODO
