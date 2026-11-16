@@ -8,8 +8,6 @@
 
 Montrez **qui stocke quoi** et **quels flux** : frontends → API → MongoDB / Neo4j.
 
-**Recommandé : [Excalidraw](https://excalidraw.com)** (à plusieurs via *Live collaboration*). Exportez en PNG ou SVG avec **« Embed scene »** coché,
-enregistrez dans `docs/architecture.excalidraw.png`, puis remplacez le schéma Mermaid ci-dessous par :
 
 `![Architecture](docs/architecture.excalidraw.png)`
 
@@ -24,17 +22,22 @@ flowchart LR
 ```
 
 TODO : en 3 à 5 lignes, le rôle de chaque base dans votre portfolio.
+La base Mongo permet de gerer les collections profil et projets
+La basse Neo permet peremt de gerer les liens entre les compétences et les projets 
 
 ## 2. Les requêtes à servir
 
+
 | # | Besoin (vu par un recruteur) | Route API | Base(s) interrogée(s) |
 |---|---|---|---|
-| R1 | Profil + timeline (expériences, formations) d'un candidat | `GET /api/candidats/{slug}` | TODO |
-| R2 | Projets d'un candidat, filtrables par compétence | `GET /api/candidats/{slug}/projets` | TODO |
-| R3 | Statistiques d'un candidat par compétence | `GET /api/candidats/{slug}/stats` | TODO |
-| R4 | Projets similaires à un projet | `GET /api/graph/projets/{slug}/similaires` | TODO |
-| R5 | Graphe de compétences d'un candidat | `GET /api/graph/competences/{slug}` | TODO |
-| TODO | Vos requêtes supplémentaires | TODO | TODO |
+| R1 | Profil + timeline (expériences, formations) d'un candidat | `GET /api/profil` | MongoDB |
+| R2 | Projets d'un candidat, filtrables par compétence | `GET /api/projets` | MongoDB |
+| R3 | Statistiques d'un candidat par compétence | `GET /api/stats/competences` | MongoDB |
+| R4 | Projets similaires à un projet | `GET /api/graph/projets/{projet_slug}/similaires` | Neo4j |
+| R5 | Graphe de compétences d'un candidat | `GET /api/graph/competences` | Neo4j |
+| R6 | Top N des compétences les plus utilisées | `GET /api/competences/top?n=5` | MongoDB |
+| R7 | Compétences d'un domaine donné | `GET /api/graph/domaines/{domaine_slug}/competences` | Neo4j |
+| R8 | Expériences filtrées par lieu | `GET /api/experiences?lieu=...` | MongoDB |
 
 ## 3. Modèle MongoDB
 
@@ -118,3 +121,11 @@ TODO : CREATE CONSTRAINT ... IF NOT EXISTS
 | Membre (pseudo GitHub) | Backend (couches / routes) | Frontend |
 |---|---|---|
 | TODO | TODO | `frontends/frontend-TODO/` |
+
+## 7. MVP de l'application
+MVP :
+- Entité 1:Candidat
+- Entité 2:Expériences
+- Entité 3:Formations
+- Entité 4:Projets
+- Entité 5:Compétences
