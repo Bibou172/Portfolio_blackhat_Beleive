@@ -173,10 +173,14 @@ ORDER BY nb_communes DESC
 LIMIT $limit
 
 // R5 - graphe de compétences du candidat (le backend transforme en nodes/links)
-MATCH (ca:Candidat {candidat_slug: $candidat_slug})-[:A_REALISE]->(p:Projet)-[:UTILISE]->(c:Competence)
+MATCH (ca:Candidat)
+OPTIONAL MATCH (ca)-[:A_REALISE]->(p:Projet)
+OPTIONAL MATCH (p)-[:UTILISE]->(c:Competence)
 OPTIONAL MATCH (c)-[:APPARTIENT_A]->(d:Domaine)
-RETURN ca, p, c, d
-
+RETURN ca {.candidat_slug, .prenom, .nom} AS candidat,
+       p  {.projet_slug, .titre, .annee}  AS projet,
+       c  {.skill_slug, .nom, .niveau}    AS competence,
+       d  {.domaine_slug, .nom}           AS domaine
 // R7 - compétences d'un domaine
 MATCH (d:Domaine {domaine_slug: $domaine_slug})<-[:APPARTIENT_A]-(c:Competence)
 RETURN d.domaine_slug AS domaine_slug, d.nom AS domaine_nom,
