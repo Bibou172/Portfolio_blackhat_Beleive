@@ -48,3 +48,10 @@ def construire_graphe(lignes: list[dict]) -> dict:
         ajouter_lien(id_c, id_d, "APPARTIENT_A")
 
     return {"nodes": list(nodes.values()), "links": list(links.values())}
+
+async def get_graphe_competences(repository) -> dict | None:
+    """Va chercher les lignes avec le repository, puis les met en forme."""
+    lignes = await repository.lignes_graphe_competences()
+    if not lignes:
+        return None
+    return construire_graphe(lignes)
