@@ -1,5 +1,8 @@
 """Repository Neo4j : écriture des nœuds et relations du graphe, et contrôles de cohérence.
 
+Règle de l'équipe : un repository ne parle qu'à UNE base et renvoie des dict (lignes brutes) ;
+le service (services/relations_service.py) les interprète.
+
 Schéma (ARCHITECTURE.md §4.1) :
     (Candidat)-[:A_REALISE]->(Projet)-[:UTILISE]->(Competence)-[:APPARTIENT_A]->(Domaine)
 
@@ -119,7 +122,7 @@ CONTROLES = {
 }
 
 
-class GraphRelationsRepository:
+class Neo4jRelationsRepository:
     def __init__(self, driver=None):
         # On peut lui donner un faux driver (tests), sinon il prend le vrai.
         self.driver = driver or get_neo4j_driver()
@@ -130,44 +133,36 @@ class GraphRelationsRepository:
             return [ligne.data() async for ligne in resultat]
 
     # ── Écritures ──
-    async def merge_candidat(self, candidat_slug: str, prenom: str, nom: str) -> None:
-        await self._executer(MERGE_CANDIDAT, candidat_slug=candidat_slug, prenom=prenom, nom=nom)
+    async def merge_candidat(self, candidat_slug: str, prenom: str, nom: str) -> list[dict]:
+        return await self._executer(MERGE_CANDIDAT, candidat_slug=candidat_slug, prenom=prenom, nom=nom)
 
     async def merge_competence(
         self, skill_slug: str, nom: str, domaine_slug: str, niveau: int | None = None, domaine_nom: str | None = None
-    ) -> None:
-        await self._executer(
+    ) -> list[dict]:
+        return await self._executer(
             MERGE_COMPETENCE, skill_slug=skill_slug, nom=nom, niveau=niveau, domaine_slug=domaine_slug, domaine_nom=domaine_nom
         )
 
     async def merge_projet(
         self, candidat_slug: str, projet_slug: str, titre: str, annee: int | None, competences: list[str]
-    ) -> int | None:
-        """Renvoie le nombre de relations UTILISE posées, ou None si le candidat n'existe pas."""
-        lignes = await self._executer(
+    ) -> list[dict]:
+        """Aucune ligne si le candidat n'existe pas (rien n'est alors créé)."""
+        return await self._executer(
             MERGE_PROJET, candidat_slug=candidat_slug, projet_slug=projet_slug, titre=titre, annee=annee, competences=competences
         )
-        return lignes[0]["nb_utilise"] if lignes else None
 
-    async def competences_connues(self, slugs: list[str]) -> set[str]:
-        lignes = await self._executer(COMPETENCES_CONNUES, slugs=slugs)
-        return set(lignes[0]["connues"]) if lignes else set()
+    async def competences_connues(self, slugs: list[str]) -> list[dict]:
+        return await self._executer(COMPETENCES_CONNUES, slugs=slugs)
 
-    async def supprimer_projet(self, projet_slug: str) -> bool:
-        lignes = await self._executer(SUPPRIMER_PROJET, projet_slug=projet_slug)
-        return bool(lignes and lignes[0]["supprimes"])
+    async def supprimer_projet(self, projet_slug: str) -> list[dict]:
+        return await self._executer(SUPPRIMER_PROJET, projet_slug=projet_slug)
 
-    # ── Cohérence ──
-    async def comptes(self) -> dict[str, int]:
-        return {l["label"]: l["nb"] for l in await self._executer(COMPTES)}
+    # ── Cohérence (lecture seule) ──
+    async def comptes(self) -> list[dict]:
+        return await self._executer(COMPTES)
 
-    async def slugs_projets(self) -> set[str]:
-        lignes = await self._executer(SLUGS_PROJETS)
-        return set(lignes[0]["slugs"]) if lignes else set()
+    async def slugs_projets(self) -> list[dict]:
+        return await self._executer(SLUGS_PROJETS)
 
-    async def controles(self) -> dict[str, list | int]:
-        resultats = {}
-        for nom, requete in CONTROLES.items():
-            lignes = await self._executer(requete)
-            resultats[nom] = lignes[0]["valeur"] if lignes else []
-        return resultats
+    async def controle(self, nom: str) -> list[dict]:
+        return await self._executer(CONTROLES[nom])

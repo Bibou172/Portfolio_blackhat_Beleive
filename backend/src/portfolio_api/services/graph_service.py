@@ -1,4 +1,4 @@
-"""Service du graphe de compétences (R5) : transforme les lignes Neo4j en nodes / links."""
+"""Service du graphe (Neo4j) : R5 (lignes -> nodes / links), R4 (projets similaires), R7 (compétences d'un domaine)."""
 
 from __future__ import annotations
 
@@ -49,6 +49,7 @@ def construire_graphe(lignes: list[dict]) -> dict:
 
     return {"nodes": list(nodes.values()), "links": list(links.values())}
 
+
 async def get_graphe_competences(repository) -> dict | None:
     """Va chercher les lignes avec le repository, puis les met en forme."""
     lignes = await repository.lignes_graphe_competences()
@@ -59,17 +60,18 @@ async def get_graphe_competences(repository) -> dict | None:
 
 async def get_projets_similaires(repository, projet_slug: str, limit: int = 5) -> dict | None:
     """R4 : None si le projet n'existe pas, sinon {"projet_slug", "items"} (liste vide possible)."""
-    if not await repository.projet_existe(projet_slug):
-        return None
     lignes = await repository.projets_similaires(projet_slug, limit)
+    if not lignes:
+        return None
     items = [
         {
-            "projet_slug": ligne["projet_slug"],
-            "titre": ligne["titre"],
-            "competences_communes": sorted(ligne["competences_communes"]),
-            "nb_communes": ligne["nb_communes"],
+            "projet_slug": l["projet_slug"],
+            "titre": l["titre"],
+            "competences_communes": sorted(l["competences_communes"]),
+            "nb_communes": l["nb_communes"],
         }
-        for ligne in lignes
+        for l in lignes
+        if l.get("projet_slug")  # ligne vide de l'OPTIONAL MATCH : projet sans voisin
     ]
     return {"projet_slug": projet_slug, "items": items}
 
@@ -79,11 +81,14 @@ async def get_competences_domaine(repository, domaine_slug: str) -> dict | None:
     lignes = await repository.competences_domaine(domaine_slug)
     if not lignes:
         return None
-    premiere = lignes[0]
-    items = [{"skill_slug": l["skill_slug"], "nom": l["nom"] or l["skill_slug"]} for l in lignes if l.get("skill_slug")]
+    items = [
+        {"skill_slug": l["skill_slug"], "nom": l["nom"] or l["skill_slug"]}
+        for l in lignes
+        if l.get("skill_slug")  # ligne vide de l'OPTIONAL MATCH : domaine sans compétence
+    ]
     items.sort(key=lambda i: i["nom"].lower())
     return {
-        "domaine_slug": premiere["domaine_slug"],
-        "domaine_nom": premiere.get("domaine_nom") or premiere["domaine_slug"],
+        "domaine_slug": lignes[0]["domaine_slug"],
+        "domaine_nom": lignes[0].get("domaine_nom") or lignes[0]["domaine_slug"],
         "items": items,
     }
