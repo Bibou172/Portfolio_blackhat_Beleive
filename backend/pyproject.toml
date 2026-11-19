@@ -12,6 +12,8 @@ dependencies = [
     # L'API est quasi identique à Motor : AsyncMongoClient(...)[db][collection], await find_one(...), etc.
     "pymongo>=4.13",
     "neo4j>=5.15",
+    "truststore>=0.10.5",
+    "pytest",
 ]
 
 [dependency-groups]
