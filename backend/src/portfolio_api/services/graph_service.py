@@ -72,3 +72,18 @@ async def get_projets_similaires(repository, projet_slug: str, limit: int = 5) -
         for ligne in lignes
     ]
     return {"projet_slug": projet_slug, "items": items}
+
+
+async def get_competences_domaine(repository, domaine_slug: str) -> dict | None:
+    """R7 : None si le domaine n'existe pas, sinon {"domaine_slug", "domaine_nom", "items"} triés par nom."""
+    lignes = await repository.competences_domaine(domaine_slug)
+    if not lignes:
+        return None
+    premiere = lignes[0]
+    items = [{"skill_slug": l["skill_slug"], "nom": l["nom"] or l["skill_slug"]} for l in lignes if l.get("skill_slug")]
+    items.sort(key=lambda i: i["nom"].lower())
+    return {
+        "domaine_slug": premiere["domaine_slug"],
+        "domaine_nom": premiere.get("domaine_nom") or premiere["domaine_slug"],
+        "items": items,
+    }

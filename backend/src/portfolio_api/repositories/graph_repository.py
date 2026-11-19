@@ -1,4 +1,4 @@
-"""Repository Neo4j du graphe : R4 (projets similaires), R5 (graphe de compétences)."""
+"""Repository Neo4j du graphe : R4 (projets similaires), R5 (graphe de compétences), R7 (compétences d'un domaine)."""
 
 from __future__ import annotations
 
@@ -32,6 +32,18 @@ MATCH (p:Projet {projet_slug: $projet_slug})
 RETURN count(p) > 0 AS existe
 """
 
+# R7 - compétences d'un domaine. OPTIONAL MATCH : un domaine sans compétence renvoie
+# une ligne (skill_slug null) ; un domaine inexistant ne renvoie aucune ligne.
+REQUETE_R7 = """
+MATCH (d:Domaine {domaine_slug: $domaine_slug})
+OPTIONAL MATCH (d)<-[:APPARTIENT_A]-(c:Competence)
+RETURN d.domaine_slug AS domaine_slug,
+       d.nom AS domaine_nom,
+       c.skill_slug AS skill_slug,
+       c.nom AS nom
+ORDER BY toLower(c.nom)
+"""
+
 
 class GraphRepository:
     def __init__(self, driver=None):
@@ -58,3 +70,8 @@ class GraphRepository:
     async def projets_similaires(self, projet_slug: str, limit: int = 5) -> list[dict]:
         """Projets voisins, triés par nombre de compétences communes décroissant."""
         return await self._lire(REQUETE_R4, projet_slug=projet_slug, limit=limit)
+
+    # ── R7 ──
+    async def competences_domaine(self, domaine_slug: str) -> list[dict]:
+        """Une ligne par compétence du domaine ; aucune ligne si le domaine n'existe pas."""
+        return await self._lire(REQUETE_R7, domaine_slug=domaine_slug)
