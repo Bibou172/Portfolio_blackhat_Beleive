@@ -1,0 +1,84 @@
+{
+  "candidat_slug": "hilary-boco",
+  "prenom": "Hilary",
+  "nom": "Boco",
+  "titre": "Élève-ingénieure Big Data pour la Transformation Numérique — ESIGELEC",
+  "bio": "Étudiante à l'ESIGELEC en Big Data pour la Transformation Numérique, mon objectif est de devenir ingénieure Big Data. Je suis résolue à apporter ma pierre au monde de l'innovation informatique, armée de mon dynamisme et de ma soif d'apprendre.",
+  "email": "hilary.boco@groupe-esigelec.org",
+  "telephone": "+33 6 05 69 99 35",
+  "liens": {
+    "github": "https://github.com/HilaryBoco06"
+  },
+  "points_forts": [
+    "Curiosité",
+    "Persévérance",
+    "Rigueur",
+    "Autonomie",
+    "Esprit d'analyse",
+    "Langues : français (langue maternelle), anglais B2, allemand A1"
+  ],
+  "experiences": [
+    {
+      "entreprise": "Cordées de la Réussite (ESIGELEC)",
+      "poste": "Tutrice (vie associative)",
+      "debut": "2025-01",
+      "fin": null,
+      "description": "Tutorat dans le cadre du programme « Cordées de la Réussite » de l'ESIGELEC.",
+      "competences": []
+    },
+    {
+      "entreprise": "Caisse Autonome de Gestion de la Dette",
+      "poste": "Assistante technicienne réseau informatique",
+      "lieu": "Cotonou, Bénin",
+      "debut": "2023-06",
+      "fin": "2023-07",
+      "description": "Maintenance d'utilitaires informatiques, installation et configuration de systèmes informatiques, initiation au développement web (HTML5, CSS3).",
+      "competences": ["maintenance-systemes", "html-css"]
+    }
+  ],
+  "formations": [
+    {
+      "ecole": "ESIGELEC",
+      "diplome": "Cycle ingénieur — Big Data pour la Transformation Numérique (BDTN)",
+      "lieu": "Saint-Étienne-du-Rouvray",
+      "debut": "2024-09",
+      "fin": "2027-06"
+    },
+    {
+      "ecole": "Classes Préparatoires conjointes à l'ESIGELEC",
+      "diplome": "Classes préparatoires — sciences de l'ingénieur, programmation informatique, communication",
+      "lieu": "Cotonou, Bénin",
+      "debut": "2022-09",
+      "fin": "2024-07"
+    },
+    {
+      "ecole": "Collège Père Aupiais",
+      "diplome": "Baccalauréat série C — mention Assez Bien",
+      "lieu": "Cotonou, Bénin",
+      "debut": "2022-06",
+      "fin": "2022-06"
+    }
+  ],
+  "competences": [
+    { "skill_slug": "c", "nom": "C", "domaine": "langages", "niveau": 3 },
+    { "skill_slug": "java", "nom": "Java", "domaine": "langages", "niveau": 3 },
+    { "skill_slug": "python", "nom": "Python", "domaine": "langages", "niveau": 3 },
+    { "skill_slug": "r", "nom": "R", "domaine": "langages", "niveau": 3 },
+    { "skill_slug": "sql", "nom": "SQL", "domaine": "langages", "niveau": 3 },
+    { "skill_slug": "html-css", "nom": "HTML5 / CSS3", "domaine": "frontend", "niveau": 2 },
+    { "skill_slug": "matplotlib", "nom": "Matplotlib", "domaine": "data", "niveau": 3 },
+    { "skill_slug": "seaborn", "nom": "Seaborn", "domaine": "data", "niveau": 3 },
+    { "skill_slug": "machine-learning", "nom": "Machine Learning", "domaine": "ia", "niveau": 3 },
+    { "skill_slug": "tensorflow", "nom": "TensorFlow", "domaine": "ia", "niveau": 3 },
+    { "skill_slug": "hadoop", "nom": "Hadoop", "domaine": "big-data", "niveau": 3 },
+    { "skill_slug": "talend", "nom": "Talend", "domaine": "big-data", "niveau": 3 },
+    { "skill_slug": "oracle-db", "nom": "Oracle Database", "domaine": "bases-de-donnees", "niveau": 3 },
+    { "skill_slug": "power-bi", "nom": "Power BI", "domaine": "visualisation", "niveau": 3 },
+    { "skill_slug": "d3js", "nom": "D3.js", "domaine": "visualisation", "niveau": 3 },
+    { "skill_slug": "excel", "nom": "Excel", "domaine": "visualisation", "niveau": 3 },
+    { "skill_slug": "docker", "nom": "Docker", "domaine": "devops", "niveau": 3 },
+    { "skill_slug": "uml", "nom": "UML", "domaine": "methodes", "niveau": 3 },
+    { "skill_slug": "windows-builder", "nom": "WindowsBuilder", "domaine": "outils", "niveau": 3 },
+    { "skill_slug": "maintenance-systemes", "nom": "Maintenance & installation de systèmes", "domaine": "reseaux", "niveau": 3 }
+  ]
+}

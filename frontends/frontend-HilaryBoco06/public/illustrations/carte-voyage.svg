@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bfe6f0"/>
+      <stop offset="1" stop-color="#8fd3df"/>
+    </linearGradient>
+    <pattern id="grille" width="100" height="100" patternUnits="userSpaceOnUse">
+      <path d="M100 0H0V100" fill="none" stroke="#063B5C" stroke-opacity=".08" stroke-width="2"/>
+    </pattern>
+  </defs>
+
+  <!-- Mer et quadrillage -->
+  <rect width="800" height="1000" fill="url(#ocean)"/>
+  <rect width="800" height="1000" fill="url(#grille)"/>
+  <g fill="none" stroke="#063B5C" stroke-opacity=".18" stroke-width="3" stroke-linecap="round">
+    <path d="M90 520q12-8 24 0t24 0"/><path d="M560 470q12-8 24 0t24 0"/><path d="M180 860q12-8 24 0t24 0"/>
+    <path d="M620 780q12-8 24 0t24 0"/><path d="M380 150q12-8 24 0t24 0"/><path d="M470 640q12-8 24 0t24 0"/>
+  </g>
+
+  <!-- Continent nord-ouest -->
+  <path d="M-20 60c60-20 140 10 200 0s110-40 160-10c40 24 20 70-20 90-50 24-60 70-110 90-60 24-120 10-160 40-30 22-60 20-90 10z" fill="#F1E6D2" stroke="#063B5C" stroke-opacity=".35" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M10 110c50-6 100 10 150 0" fill="none" stroke="#e4d3b5" stroke-width="10" stroke-linecap="round"/>
+  <!-- montagnes dessinées -->
+  <g fill="#18A7B5" stroke="#063B5C" stroke-opacity=".3" stroke-width="2" stroke-linejoin="round">
+    <path d="M90 200l26-44 26 44z"/><path d="M128 200l22-36 22 36z"/>
+  </g>
+  <g fill="#F4FAFC"><path d="M108 172l8-16 8 16-8-4z"/><path d="M143 176l7-12 7 12-7-3z"/></g>
+
+  <!-- Grande île est -->
+  <path d="M520 220c40-40 120-50 180-20 50 26 90 90 60 150-24 48-80 50-110 90-30 40-90 50-130 20-40-30-30-80-50-120-18-40 10-80 50-120z" fill="#F1E6D2" stroke="#063B5C" stroke-opacity=".35" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M560 260c30-24 80-30 120-10" fill="none" stroke="#e4d3b5" stroke-width="10" stroke-linecap="round"/>
+  <!-- forêt -->
+  <g fill="#55C9D0" stroke="#063B5C" stroke-opacity=".25" stroke-width="2">
+    <circle cx="620" cy="330" r="18"/><circle cx="650" cy="318" r="22"/><circle cx="676" cy="340" r="16"/>
+  </g>
+  <!-- ville dessinée -->
+  <g stroke="#063B5C" stroke-opacity=".5" stroke-width="2" stroke-linejoin="round">
+    <rect x="580" y="380" width="22" height="40" rx="3" fill="#A9DDEB"/>
+    <rect x="606" y="366" width="26" height="54" rx="3" fill="#F4FAFC"/>
+    <rect x="636" y="392" width="20" height="28" rx="3" fill="#55C9D0"/>
+    <path d="M606 366l13-14 13 14" fill="#18A7B5"/>
+  </g>
+
+  <!-- Archipel sud -->
+  <path d="M130 640c30-30 90-34 130-10 30 18 24 60-6 76-40 22-100 20-130-6-20-18-16-42 6-60z" fill="#F1E6D2" stroke="#063B5C" stroke-opacity=".35" stroke-width="3"/>
+  <path d="M300 720c20-14 50-12 64 4 10 14-4 32-26 34-24 2-50-10-50-24 0-6 4-10 12-14z" fill="#F1E6D2" stroke="#063B5C" stroke-opacity=".35" stroke-width="3"/>
+  <!-- palmier -->
+  <g transform="translate(190 650)">
+    <path d="M0 20c-2-22 2-40 12-54" fill="none" stroke="#b99b6b" stroke-width="6" stroke-linecap="round"/>
+    <g fill="#18A7B5"><path d="M12-34c-14-8-30-4-38 6 14-2 26-4 38-6z"/><path d="M12-34c10-12 26-14 36-6-12 0-24 2-36 6z"/><path d="M12-34c-2-14 4-26 16-30-4 12-8 20-16 30z"/></g>
+  </g>
+
+  <!-- Île sud-est avec phare -->
+  <path d="M540 820c30-24 90-28 130-6 26 16 20 50-10 62-44 18-110 14-130-10-12-16-6-32 10-46z" fill="#F1E6D2" stroke="#063B5C" stroke-opacity=".35" stroke-width="3"/>
+  <g transform="translate(610 800)" stroke="#063B5C" stroke-opacity=".5" stroke-width="2" stroke-linejoin="round">
+    <path d="M-10 30l4-50h12l4 50z" fill="#F4FAFC"/>
+    <path d="M-8 10h16M-7 -6h14" stroke="#18A7B5" stroke-opacity="1" stroke-width="6"/>
+    <rect x="-8" y="-30" width="16" height="10" rx="2" fill="#55C9D0"/>
+    <path d="M-10-30l10-10 10 10z" fill="#063B5C" stroke-opacity="1"/>
+  </g>
+
+  <!-- Itinéraire en pointillés + étapes -->
+  <path d="M120 140C220 260 380 220 440 320S600 330 640 400 420 520 380 600 220 640 200 670 330 760 340 735 520 760 610 820"
+        fill="none" stroke="#063B5C" stroke-width="4" stroke-dasharray="3 14" stroke-linecap="round"/>
+  <g>
+    <g transform="translate(120 140)"><circle r="16" fill="#063B5C"/><circle r="7" fill="#55C9D0"/></g>
+    <g transform="translate(640 400)"><path d="M0 0c-14-16-20-26-20-36a20 20 0 0 1 40 0c0 10-6 20-20 36z" fill="#18A7B5" stroke="#063B5C" stroke-width="3"/><circle cy="-36" r="7" fill="#F4FAFC"/></g>
+    <g transform="translate(200 668)"><path d="M0 0c-14-16-20-26-20-36a20 20 0 0 1 40 0c0 10-6 20-20 36z" fill="#18A7B5" stroke="#063B5C" stroke-width="3"/><circle cy="-36" r="7" fill="#F4FAFC"/></g>
+    <g transform="translate(610 822)"><circle r="16" fill="#18A7B5" stroke="#063B5C" stroke-width="3"/><path d="M-6 0l4 5 9-10" stroke="#F4FAFC" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+
+  <!-- Avion sur la route -->
+  <g transform="translate(450 330) rotate(35)">
+    <path d="M-26 0c0-4 3-6 8-6h34c8 0 14 3 17 6-3 3-9 6-17 6h-34c-5 0-8-2-8-6z" fill="#F4FAFC" stroke="#063B5C" stroke-width="2.5"/>
+    <path d="M-2-5l-10-18h8l20 18z" fill="#55C9D0" stroke="#063B5C" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-2 5l-10 18h8l20-18z" fill="#18A7B5" stroke="#063B5C" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Bateau -->
+  <g transform="translate(420 560)" stroke="#063B5C" stroke-width="2.5" stroke-linejoin="round">
+    <path d="M-34 0h68l-10 14h-48z" fill="#F4FAFC"/>
+    <path d="M0-4v-56" />
+    <path d="M3-56c18 16 24 34 22 50H3z" fill="#55C9D0"/>
+    <path d="M-3-48c-14 14-20 28-22 42h22z" fill="#F1E6D2"/>
+  </g>
+
+  <!-- Rose des vents -->
+  <g transform="translate(150 410)">
+    <circle r="62" fill="#F4FAFC" fill-opacity=".7" stroke="#063B5C" stroke-opacity=".5" stroke-width="3"/>
+    <circle r="48" fill="none" stroke="#063B5C" stroke-opacity=".3" stroke-width="2" stroke-dasharray="3 6"/>
+    <path d="M0-56L10 0 0 56-10 0z" fill="#063B5C"/>
+    <path d="M0-56L10 0H-10z" fill="#18A7B5"/>
+    <path d="M-56 0L0-8 56 0 0 8z" fill="#063B5C" opacity=".7"/>
+    <circle r="6" fill="#F4FAFC" stroke="#063B5C" stroke-width="2"/>
+    <text y="-70" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#063B5C">N</text>
+  </g>
+
+  <!-- Cadre « carnet » -->
+  <rect x="14" y="14" width="772" height="972" rx="26" fill="none" stroke="#063B5C" stroke-opacity=".25" stroke-width="4" stroke-dasharray="14 10"/>
+</svg>
