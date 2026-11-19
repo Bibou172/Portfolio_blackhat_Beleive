@@ -55,3 +55,20 @@ async def get_graphe_competences(repository) -> dict | None:
     if not lignes:
         return None
     return construire_graphe(lignes)
+
+
+async def get_projets_similaires(repository, projet_slug: str, limit: int = 5) -> dict | None:
+    """R4 : None si le projet n'existe pas, sinon {"projet_slug", "items"} (liste vide possible)."""
+    if not await repository.projet_existe(projet_slug):
+        return None
+    lignes = await repository.projets_similaires(projet_slug, limit)
+    items = [
+        {
+            "projet_slug": ligne["projet_slug"],
+            "titre": ligne["titre"],
+            "competences_communes": sorted(ligne["competences_communes"]),
+            "nb_communes": ligne["nb_communes"],
+        }
+        for ligne in lignes
+    ]
+    return {"projet_slug": projet_slug, "items": items}

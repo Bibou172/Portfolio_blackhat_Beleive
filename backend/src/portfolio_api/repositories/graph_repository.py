@@ -1,4 +1,4 @@
-"""Repository Neo4j du graphe de compétences (R5)."""
+"""Repository Neo4j du graphe : R4 (projets similaires), R5 (graphe de compétences)."""
 
 from __future__ import annotations
 
@@ -15,6 +15,23 @@ RETURN ca {.candidat_slug, .prenom, .nom} AS candidat,
        d  {.domaine_slug, .nom}           AS domaine
 """
 
+# R4 - projets partageant au moins une compétence avec le projet donné
+REQUETE_R4 = """
+MATCH (p:Projet {projet_slug: $projet_slug})-[:UTILISE]->(c:Competence)<-[:UTILISE]-(autre:Projet)
+WHERE autre <> p
+RETURN autre.projet_slug AS projet_slug,
+       autre.titre AS titre,
+       collect(c.skill_slug) AS competences_communes,
+       count(c) AS nb_communes
+ORDER BY nb_communes DESC, projet_slug ASC
+LIMIT $limit
+"""
+
+REQUETE_PROJET_EXISTE = """
+MATCH (p:Projet {projet_slug: $projet_slug})
+RETURN count(p) > 0 AS existe
+"""
+
 
 class GraphRepository:
     def __init__(self, driver=None):
@@ -26,3 +43,18 @@ class GraphRepository:
         async with self.driver.session() as session:
             resultat = await session.run(REQUETE_R5)
             return [ligne.data() async for ligne in resultat]
+
+    async def _lire(self, requete: str, **params) -> list[dict]:
+        """Exécute une requête de lecture et renvoie les lignes en dictionnaires."""
+        async with self.driver.session() as session:
+            resultat = await session.run(requete, **params)
+            return [ligne.data() async for ligne in resultat]
+
+    # ── R4 ──
+    async def projet_existe(self, projet_slug: str) -> bool:
+        lignes = await self._lire(REQUETE_PROJET_EXISTE, projet_slug=projet_slug)
+        return bool(lignes and lignes[0].get("existe"))
+
+    async def projets_similaires(self, projet_slug: str, limit: int = 5) -> list[dict]:
+        """Projets voisins, triés par nombre de compétences communes décroissant."""
+        return await self._lire(REQUETE_R4, projet_slug=projet_slug, limit=limit)
