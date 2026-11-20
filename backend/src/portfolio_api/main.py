@@ -23,17 +23,17 @@ async def lifespan(app: FastAPI):
     await close_neo4j()
 
 
-settings = get_settings()
+Settings = get_settings()
 
 app = FastAPI(
-    title=settings.app_name,
+    title=Settings.app_name,
     description="API d'équipe du Portfolio Polyglotte — voir API_ROUTES.md",
     lifespan=lifespan,
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
+    allow_origins=Settings.cors_origin_list,
     allow_methods=["*"],
     allow_headers=["*"],
 )
