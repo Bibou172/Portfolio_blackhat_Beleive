@@ -28,7 +28,7 @@ export function template() {
         <span>© ${year} <strong class="js-foot-name">Cédric Akle</strong></span>
         <span>Explore · Discover · Understand</span>
         <span>FastAPI · MongoDB · Neo4j</span>
-        <a href="#/">Haut de page ↑</a>
+        <a href="#/quick">Haut de page ↑</a>
       </div>
     </footer>
   </section>`;

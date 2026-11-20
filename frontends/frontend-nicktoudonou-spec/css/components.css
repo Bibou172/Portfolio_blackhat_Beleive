@@ -121,7 +121,7 @@
   transition: transform 0.6s var(--ease), background 0.6s;
 }
 .brand:hover .brand__mark { transform: rotate(90deg); }
-.brand__name { font-weight: 800; font-stretch: 72%; text-transform: uppercase; font-size: 19px; letter-spacing: 0.01em; }
+.brand__name { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 16px; letter-spacing: -0.02em; }
 .brand small { color: var(--mist); }
 
 .nav { display: flex; gap: 2px; }
@@ -199,8 +199,8 @@
 .menu__nav { display: flex; flex-direction: column; gap: 4px; position: relative; }
 .menu__nav a {
   display: flex; align-items: baseline; gap: 14px;
-  font-weight: 800; font-stretch: 66%; text-transform: uppercase;
-  font-size: clamp(44px, 13vw, 84px); line-height: 1; letter-spacing: -0.01em;
+  font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: -0.03em;
+  font-size: clamp(32px, 9vw, 60px); line-height: 1.05;
   text-decoration: none;
   transform: skewX(-8deg) translateX(-30px); opacity: 0;
   transition: transform 0.6s var(--ease), opacity 0.6s;

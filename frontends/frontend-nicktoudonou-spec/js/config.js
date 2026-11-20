@@ -4,7 +4,7 @@
 
 export const CONFIG = {
   /* Adresse de ton API (just dev) */
-  apiUrl: "http://localhost:8000",
+  apiUrl: location.hostname === "localhost" ? "http://localhost:8000" : "https://backend-lemon-five-v5x2aac1el.vercel.app",
 
   /* Ton identifiant : ajouté automatiquement à chaque appel (?candidat_slug=...) */
   candidatSlug: "cedric-akle",

@@ -80,7 +80,7 @@ export function renderProjet(app, slug) {
         <div class="container p-hero__grid">
           <div class="case__top mono">
             <a class="p-back" href="#/work">${ARROW}Selected work</a>
-            <span>P.${pad(index + 1)} · ${esc(w.name)}</span>
+            <a class="p-back" href="#/archive">Retour au Data World</a>
             <span>${p.annee ?? "—"}</span>
           </div>
           <div></div>

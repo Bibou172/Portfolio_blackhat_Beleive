@@ -13,6 +13,18 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Manrope";
+  src: url("../assets/fonts/manrope-var.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Syne";
+  src: url("../assets/fonts/syne-var.woff2") format("woff2-variations");
+  font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
   font-family: "Instrument Serif";
   src: url("../assets/fonts/instrument-serif-italic.woff2") format("woff2");
   font-style: italic;
@@ -56,13 +68,14 @@
   --accent: var(--dusk);
 
   /* Typographie */
-  --font: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --font: "Manrope", "Helvetica Neue", system-ui, sans-serif;   /* texte : sobre et lisible */
   --serif: "Instrument Serif", Georgia, serif;
+  --display: "Syne", "Archivo", sans-serif;   /* titres : grotesque artistique, large */
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 
   /* Échelle (plus mesurée qu'en v2) */
-  --fs-hero: clamp(40px, 5.6vw, 92px);
-  --fs-h2: clamp(30px, 3.8vw, 58px);
+  --fs-hero: clamp(32px, 4.3vw, 70px);
+  --fs-h2: clamp(26px, 2.9vw, 44px);
   --fs-h3: clamp(20px, 1.7vw, 26px);
   --fs-body: 16px;
   --fs-small: 14px;

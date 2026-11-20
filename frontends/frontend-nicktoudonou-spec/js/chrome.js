@@ -63,7 +63,7 @@ export function initChrome() {
       const accent = lit?.dataset.accent ?? mid.dataset.accent;
       if (accent && root.style.getPropertyValue("--accent") !== accent) root.style.setProperty("--accent", accent);
       const id = mid.id || "";
-      const href = id === "intro" ? "#/" : `#/${id}`;
+      const href = id === "intro" ? "#/quick" : `#/${id}`;
       navLinks.forEach((a) => a.setAttribute("aria-current", String(a.getAttribute("href") === href)));
       rail.classList.toggle("is-hidden", !mid.id || mid.id === "intro");
     }

@@ -1,8 +1,10 @@
 /* ==========================================================================
    ROUTER — lit l'adresse après le # et affiche la bonne page.
 
-   #/                  → accueil (toutes les sections)
-   #/work, #/about ... → accueil, défile jusqu'à la section
+   #/ , #/city         → DATA WORLD (mode Explore, 3D)
+   #/lab, #/archive, #/journey → DATA WORLD, voyage vers ce lieu
+   #/quick             → Accès rapide : le portfolio classique
+   #/work, #/about ... → Accès rapide, défile jusqu'à la section
    #/projet/<slug>     → étude de cas d'un projet
    #/admin             → ajout de données (page cachée)
    ========================================================================== */
@@ -10,22 +12,35 @@
 import { renderHome, scrollToSection, SECTIONS } from "./pages/home.js";
 import { renderProjet } from "./pages/projet.js";
 import { renderAdmin } from "./pages/admin.js";
+import { renderWorld } from "./world/index.js";
 import { wipe, resetReveal } from "./motion.js";
+
+const WORLD_ZONES = ["city", "lab", "archive", "journey"];
 
 let current = null;
 let dispose = () => {};
+let worldCtl = null;
 let chrome = null;
 
 function parse() {
   const [a, b] = location.hash.replace(/^#\/?/, "").split("/");
   if (a === "projet" && b) return { view: "projet", slug: decodeURIComponent(b) };
   if (a === "admin") return { view: "admin" };
+  if (!a || WORLD_ZONES.includes(a)) return { view: "world", zone: a || "city" };
+  if (a === "quick") return { view: "home", section: null };
   return { view: "home", section: SECTIONS.includes(a) ? a : null };
 }
 
 async function go() {
   const route = parse();
   const app = document.getElementById("app");
+
+  // Déjà dans le monde : la caméra voyage, pas de rechargement.
+  if (current?.view === "world" && route.view === "world") {
+    worldCtl?.go(route.zone);
+    current = route;
+    return;
+  }
 
   // Déjà sur l'accueil : on défile simplement, sans transition.
   if (current?.view === "home" && route.view === "home") {
@@ -38,7 +53,11 @@ async function go() {
     dispose();
     resetReveal();
     window.scrollTo(0, 0);
-    if (route.view === "projet") dispose = renderProjet(app, route.slug);
+    worldCtl = null;
+    if (route.view === "world") {
+      worldCtl = renderWorld(app, route.zone);
+      dispose = worldCtl.dispose;
+    } else if (route.view === "projet") dispose = renderProjet(app, route.slug);
     else if (route.view === "admin") dispose = renderAdmin(app);
     else {
       dispose = renderHome(app);
