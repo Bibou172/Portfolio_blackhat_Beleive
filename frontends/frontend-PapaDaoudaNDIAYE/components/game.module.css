@@ -1,0 +1,216 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--night);
+  touch-action: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.canvas canvas {
+  display: block;
+}
+
+/* --- Bulle « Appuie sur E » ------------------------------------------------ */
+.prompt {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(110px, 22vh, 190px);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  translate: -50% 0;
+  padding: 0.8rem 1.1rem;
+  text-align: center;
+}
+
+.prompt::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  translate: -50% 0;
+  rotate: 45deg;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.9em;
+  height: 1.9em;
+  margin: 0 0.25em;
+  border: 2px solid var(--yellow);
+  border-radius: 6px;
+  color: var(--yellow);
+  font-family: var(--f-mono);
+  font-weight: 700;
+}
+
+.keyboardHint {
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+}
+
+@media (pointer: coarse) {
+  .keyboardHint {
+    display: none;
+  }
+}
+
+/* --- Contrôles tactiles ---------------------------------------------------- */
+.touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .touch {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    left: 104px; /* juste à droite de la mini-carte compacte */
+    z-index: 25;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+}
+
+.joystick {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(46, 230, 214, 0.6);
+  border-radius: 50%;
+  background: rgba(14, 8, 32, 0.55);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 16px rgba(46, 230, 214, 0.7);
+}
+
+.jumpBtn {
+  width: 76px;
+  height: 76px;
+  border: 2px solid var(--pink);
+  border-radius: 50%;
+  background: rgba(255, 61, 139, 0.25);
+  color: var(--text);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* --- Écran de chargement ---------------------------------------------------- */
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(14, 8, 32, 0.25), rgba(14, 8, 32, 0.85)),
+    url("/assets/decor/sunset.svg") center / cover no-repeat,
+    var(--night);
+  text-align: center;
+}
+
+.loadingInner {
+  display: grid;
+  gap: 1rem;
+  width: min(560px, 100%);
+}
+
+.loadingTitle {
+  font-size: clamp(2.4rem, 8vw, 4.8rem);
+  text-shadow: 0 4px 0 rgba(14, 8, 32, 0.6);
+}
+
+.loadingNeon {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  margin-top: -0.6rem;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 3px;
+  padding: 4px;
+  border: 2px solid var(--yellow);
+  border-radius: 8px;
+  background: rgba(14, 8, 32, 0.8);
+}
+
+.seg {
+  height: 14px;
+  border-radius: 2px;
+  background: rgba(255, 209, 102, 0.15);
+}
+
+.segOn {
+  background: linear-gradient(180deg, var(--yellow), var(--orange));
+  box-shadow: 0 0 8px rgba(255, 159, 69, 0.7);
+}
+
+.tip {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border-left: 3px solid var(--teal);
+  background: rgba(14, 8, 32, 0.75);
+  border-radius: 6px;
+  text-align: left;
+}
+
+/* --- Accueil en mode classique -------------------------------------------- */
+.classic {
+  min-height: 100vh;
+  padding: calc(var(--hud-h) + 1.5rem) 1.25rem 190px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.classicGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 2rem 0 0;
+  list-style: none;
+}
+
+.classicCard {
+  display: grid;
+  gap: 0.4rem;
+  height: 100%;
+  padding: 1.2rem;
+  border-top: 4px solid var(--accent);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.classicCard:hover {
+  box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 45%, transparent);
+}
