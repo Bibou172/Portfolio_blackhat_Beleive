@@ -37,7 +37,7 @@ async function ContactContent() {
           {initiales}
         </div>
         <div>
-          <p className={`mono ${styles.dispo}`}>Dispo · stage / alternance</p>
+          <p className={`mono ${styles.dispo}`}>Dispo · CDI</p>
           <h2 className="title" style={{ fontSize: "clamp(2rem, 6vw, 3rem)", margin: "0.4rem 0" }}>
             {p.prenom} {p.nom}
           </h2>
