@@ -5,6 +5,7 @@
   "titre": "Élève-ingénieure Big Data pour la Transformation Numérique — ESIGELEC",
   "bio": "Étudiante à l'ESIGELEC en Big Data pour la Transformation Numérique, mon objectif est de devenir ingénieure Big Data. Je suis résolue à apporter ma pierre au monde de l'innovation informatique, armée de mon dynamisme et de ma soif d'apprendre.",
   "email": "hilary.boco@groupe-esigelec.org",
+  "email_personnel": "bocohilary06@gmail.com",
   "telephone": "+33 6 05 69 99 35",
   "liens": {
     "github": "https://github.com/HilaryBoco06",
@@ -16,9 +17,20 @@
     "Rigueur",
     "Autonomie",
     "Esprit d'analyse",
-    "Langues : français (langue maternelle), anglais B2, allemand A1"
+    "Langues : français (langue maternelle), anglais B2, allemand A1",
+    "Mobilité : France entière",
+    "Permis B"
   ],
   "experiences": [
+    {
+      "entreprise": "Air France",
+      "poste": "Ingénieur données & SI (alternance)",
+      "lieu": "Roissy-en-France",
+      "debut": "2025-09",
+      "fin": "2027-09",
+      "description": "Constitution, structuration et labellisation du jeu de données d'entraînement pour un modèle d'IA d'analyse automatisée de devis. Audit, nettoyage et fiabilisation d'une base de plus de 60 000 équipements (GMAO SamFM) ; standardisation et réduction des typologies d'anomalies. Création et modification de tableaux de bord de pilotage interactifs.",
+      "competences": []
+    },
     {
       "entreprise": "Cordées de la Réussite (ESIGELEC)",
       "poste": "Tutrice (vie associative)",
@@ -35,7 +47,10 @@
       "debut": "2023-06",
       "fin": "2023-07",
       "description": "Maintenance d'utilitaires informatiques, installation et configuration de systèmes informatiques, initiation au développement web (HTML5, CSS3).",
-      "competences": ["maintenance-systemes", "html-css"]
+      "competences": [
+        "maintenance-systemes",
+        "html-css"
+      ]
     }
   ],
   "formations": [
@@ -44,7 +59,7 @@
       "diplome": "Cycle ingénieur — Big Data pour la Transformation Numérique (BDTN)",
       "lieu": "Saint-Étienne-du-Rouvray",
       "debut": "2024-09",
-      "fin": "2027-06"
+      "fin": "2027-09"
     },
     {
       "ecole": "Classes Préparatoires conjointes à l'ESIGELEC",
@@ -81,6 +96,12 @@
     { "skill_slug": "docker", "nom": "Docker", "domaine": "devops", "niveau": 3 },
     { "skill_slug": "uml", "nom": "UML", "domaine": "methodes", "niveau": 3 },
     { "skill_slug": "windows-builder", "nom": "WindowsBuilder", "domaine": "outils", "niveau": 3 },
-    { "skill_slug": "maintenance-systemes", "nom": "Maintenance & installation de systèmes", "domaine": "reseaux", "niveau": 3 }
+    { "skill_slug": "maintenance-systemes", "nom": "Maintenance & installation de systèmes", "domaine": "reseaux", "niveau": 3 },
+    { "skill_slug": "pandas", "nom": "Pandas", "domaine": "data", "niveau": 3 },
+    { "skill_slug": "numpy", "nom": "NumPy", "domaine": "data", "niveau": 3 },
+    { "skill_slug": "scikit-learn", "nom": "scikit-learn", "domaine": "ia", "niveau": 3 },
+    { "skill_slug": "mongodb", "nom": "MongoDB", "domaine": "bases-de-donnees", "niveau": 3 },
+    { "skill_slug": "neo4j", "nom": "Neo4j", "domaine": "bases-de-donnees", "niveau": 3 },
+    { "skill_slug": "powerpoint", "nom": "PowerPoint", "domaine": "outils", "niveau": 3 }
   ]
 }
