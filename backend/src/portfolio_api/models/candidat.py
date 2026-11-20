@@ -49,7 +49,7 @@ class CandidatOut(BaseModel):
     nom: str
     titre: str
     bio: str
-    email: EmailStr
+    email: EmailStr | None = None
     liens: LiensOut = Field(default_factory=LiensOut)
     experiences: list[ExperienceOut] = Field(default_factory=list)
     formations: list[FormationOut] = Field(default_factory=list)
