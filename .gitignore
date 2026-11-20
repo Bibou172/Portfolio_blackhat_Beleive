@@ -11,3 +11,4 @@ build/
 .astro/
 .DS_Store
 .claude
+data
