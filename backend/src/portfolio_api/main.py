@@ -11,6 +11,9 @@ from portfolio_api.core.config import get_settings
 from portfolio_api.db.mongo import close_mongo
 from portfolio_api.db.neo4j import close_neo4j
 from portfolio_api.models import HealthResponse
+from portfolio_api.api.profil import router as profil_router
+from portfolio_api.api.experiences import router as experiences_router
+from portfolio_api.api.projets import router as projets_router
 
 
 @asynccontextmanager
@@ -20,17 +23,17 @@ async def lifespan(app: FastAPI):
     await close_neo4j()
 
 
-settings = get_settings()
+Settings = get_settings()
 
 app = FastAPI(
-    title=settings.app_name,
+    title=Settings.app_name,
     description="API d'équipe du Portfolio Polyglotte — voir API_ROUTES.md",
     lifespan=lifespan,
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
+    allow_origins=Settings.cors_origin_list,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -39,7 +42,9 @@ app.add_middleware(
 @app.get("/api/health", response_model=HealthResponse, tags=["santé"])
 async def health() -> HealthResponse:
     return HealthResponse()
-
+app.include_router(profil_router, prefix="/api")
+app.include_router(experiences_router, prefix="/api")
+app.include_router(projets_router, prefix="/api")
 
 # TODO (équipe) : enregistrer vos routeurs
 from portfolio_api.api.routes_graph import router as graph_router
