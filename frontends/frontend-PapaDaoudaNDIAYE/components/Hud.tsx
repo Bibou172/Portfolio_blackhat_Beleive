@@ -61,7 +61,7 @@ export default function Hud() {
               {"☆".repeat(5 - niveau)}
             </span>
           </span>
-          <span className={styles.dispo}>DISPO · STAGE / ALTERNANCE</span>
+          <span className={styles.dispo}>DISPO · CDI</span>
         </div>
       </header>
       <Suspense fallback={null}>
