@@ -1,0 +1,40 @@
+/* ==========================================================================
+   TOKENS — l'identité visuelle en un seul endroit.
+   Changer une couleur ou une police ici la change sur tout le site.
+   ========================================================================== */
+
+:root {
+  /* Palette (règle : le citron n'est JAMAIS une couleur de texte sur fond clair) */
+  --paper: #F7F7F4;      /* fond principal, ~70 % du site */
+  --ink: #171717;        /* textes, grands titres, sections sombres */
+  --lime: #D7FF46;       /* accents uniquement, < 5 % */
+  --concrete: #D8D8D2;   /* filets, séparateurs */
+
+  --ink-soft: #232321;
+  --muted: #64645F;              /* texte secondaire sur papier (contraste AA) */
+  --muted-dark: #A3A39C;         /* texte secondaire sur encre (contraste AA) */
+  --line: #D8D8D2;
+  --line-dark: rgba(247, 247, 244, 0.14);
+
+  /* Typographies : une police = un rôle */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  /* Grille */
+  --max: 1440px;
+  --pad: clamp(16px, 4vw, 56px);
+  --gutter: clamp(12px, 1.6vw, 24px);
+  --header-h: 64px;
+
+  /* Mouvement */
+  --ease: cubic-bezier(0.2, 0.7, 0, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --t-fast: 0.2s;
+  --t-med: 0.5s;
+  --t-slow: 1s;
+
+  /* Traitement photo commun à toutes les images (cohérence "Ghost of Tsushima") */
+  --photo-filter: grayscale(1) contrast(1.12) brightness(0.62);
+  --photo-filter-hover: grayscale(0.15) contrast(1.05) brightness(0.8);
+}
