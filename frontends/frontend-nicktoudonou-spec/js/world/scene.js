@@ -15,6 +15,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { identityTexture, terminalTexture, cubeTexture, plaqueTexture, signTexture, gridTexture } from "./textures.js";
 
 export const ZONES = {
@@ -26,7 +27,7 @@ export const ZONES = {
 
 const POSES = {
   city:    { pos: new THREE.Vector3(0, 7.5, 36),   target: new THREE.Vector3(0, 6, -8) },
-  lab:     { pos: new THREE.Vector3(-34, 4.2, 6.5), target: new THREE.Vector3(-34, 3.0, -8) },
+  lab:     { pos: new THREE.Vector3(-34, 4.8, 5.4), target: new THREE.Vector3(-34, 4.2, -7) },
   archive: { pos: new THREE.Vector3(34, 5.4, 11),  target: new THREE.Vector3(34, 3.8, -6) },
 };
 
@@ -126,6 +127,15 @@ export class DataWorld {
     const rt = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: this.mobile ? 0 : 4 });
     this.composer = new EffectComposer(this.renderer, rt);
     this.composer.addPass(new RenderPass(s, this.camera));
+    // Garde-fou : un pixel invalide (NaN / infini) ferait "baver" un carré noir dans le bloom
+    this.composer.addPass(new ShaderPass({
+      uniforms: { tDiffuse: { value: null } },
+      vertexShader: "varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }",
+      fragmentShader: `uniform sampler2D tDiffuse; varying vec2 vUv;
+        void main(){ vec4 c = texture2D(tDiffuse, vUv);
+          if (!(c.r == c.r) || !(c.g == c.g) || !(c.b == c.b)) c = vec4(0.0, 0.0, 0.0, 1.0);
+          gl_FragColor = vec4(clamp(c.rgb, 0.0, 48.0), 1.0); }`,
+    }));
     this.bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.7, 0.5, 0.9);
     this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
@@ -397,7 +407,7 @@ export class DataWorld {
 
     const pyr = new THREE.Mesh(new THREE.ConeGeometry(2.6, 3.6, 4), new THREE.MeshStandardMaterial({ color: "#09080A", roughness: 0.25, metalness: 0.9 }));
     pyr.rotation.x = Math.PI;
-    pyr.position.set(0, 8.2, -7);
+    pyr.position.set(0, 9.2, -11.4);
     pyr.castShadow = true;
     g.add(pyr);
     const cone = new THREE.Mesh(new THREE.ConeGeometry(4.2, 7.6, 4, 1, true), new THREE.ShaderMaterial({
@@ -408,10 +418,10 @@ export class DataWorld {
         void main(){ float a = pow(vUv.y, 1.5) * 0.26 * (0.85 + 0.15 * sin(uTime * 3.0 + vUv.y * 20.0));
           gl_FragColor = vec4(vec3(1.6, 0.18, 0.15) * a, 1.0); }`,
     }));
-    cone.position.set(0, 3.9, -7);
+    cone.position.set(0, 4.9, -11.4);
     g.add(cone);
     this.anim.push((t) => { cone.rotation.y = t * 0.18; });
-    this.anim.push((t) => { pyr.rotation.y = t * 0.18; pyr.position.y = 8.2 + Math.sin(t * 0.7) * 0.15; });
+    this.anim.push((t) => { pyr.rotation.y = t * 0.18; pyr.position.y = 9.2 + Math.sin(t * 0.7) * 0.12; });
 
     const light = new THREE.PointLight(new THREE.Color("#FF2A30"), 160, 34, 1.6);
     light.position.set(0, 7, -3);
@@ -677,31 +687,45 @@ export class DataWorld {
 
   buildTerminals(domains) {
     const list = domains.slice(0, 6);
-    const spacing = list.length > 4 ? 3.7 : 4.6;
     const desk = new THREE.MeshStandardMaterial({ color: "#1B191C", roughness: 0.7, metalness: 0.35 });
+    // Salle de contrôle : 2 rangées de 3 postes, la 2e sur une estrade (comme un amphithéâtre)
+    const perRow = list.length > 3 ? Math.ceil(list.length / 2) : list.length;
+    const spacing = 5.0;
+    if (list.length > 3) {
+      const riser = new THREE.Mesh(new THREE.BoxGeometry(perRow * spacing + 1.5, 2.5, 3.6),
+        new THREE.MeshStandardMaterial({ color: "#2E2A2C", roughness: 0.9, metalness: 0.05 }));
+      riser.position.set(0, 1.75, -9.6);
+      riser.castShadow = riser.receiveShadow = true;
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(perRow * spacing + 1.5, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: glow("#E8262E", 3) }));
+      edge.position.set(0, 3.02, -7.78);
+      this.labGroup.add(riser, edge);
+    }
     list.forEach((d, i) => {
-      const x = (i - (list.length - 1) / 2) * spacing;
+      const row = Math.floor(i / perRow);
+      const inRow = row === 0 ? Math.min(perRow, list.length) : list.length - perRow;
+      const col = i % perRow;
+      const x = (col - (inRow - 1) / 2) * spacing;
       const t = new THREE.Group();
-      t.position.set(x, 0.5, -6.5 + Math.abs(x) * 0.12);
-      t.rotation.y = -x * 0.025;
+      t.position.set(x, row ? 3.0 : 0.5, row ? -9.8 : -4.2);
+      t.rotation.y = -x * 0.04;           // les postes se tournent légèrement vers le visiteur
       const base = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.0, 1.1), desk);
       base.position.y = 0.5; base.castShadow = true;
       const stand = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.1, 0.12), desk);
       stand.position.set(0, 1.5, -0.3);
       const screenMat = new THREE.MeshBasicMaterial({ map: terminalTexture(d, i, this.renderer), color: glow("#ffffff", 0.95), fog: false });
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(3.1, 1.94), screenMat);
-      screen.position.set(0, 2.85, -0.25);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(3.7, 2.31), screenMat);
+      screen.position.set(0, 3.0, -0.25);
       screen.rotation.x = -0.12;
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(3.25, 2.08, 0.08), desk);
-      frame.position.set(0, 2.85, -0.31); frame.rotation.x = -0.12; frame.castShadow = true;
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(3.86, 2.46, 0.08), desk);
+      frame.position.set(0, 3.0, -0.31); frame.rotation.x = -0.12; frame.castShadow = true;
       const glowStrip = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: glow("#E8262E", 3) }));
       glowStrip.position.set(0, 1.02, 0.56);
       t.add(base, stand, frame, screen, glowStrip);
       this.labGroup.add(t);
       this.register({
         id: `domain-${d.slug}`, zone: "lab", kind: "domain", tagY: 1.25, label: d.label, sub: `${d.skills.length} compétence${d.skills.length > 1 ? "s" : ""}`,
-        data: d, hit: screen, focus: { obj: screen, dist: 7.4 },
-        apply: (h) => { screenMat.color.copy(glow("#ffffff", 0.95 + h * 0.35)); t.position.y = 0.5 + h * 0.08; },
+        data: d, hit: screen, focus: { obj: screen, dist: 6.2 },
+        apply: (h) => { screenMat.color.copy(glow("#ffffff", 0.95 + h * 0.35)); t.position.y = (row ? 3.0 : 0.5) + h * 0.1; },
       });
     });
   }

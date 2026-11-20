@@ -359,6 +359,8 @@ export function renderWorld(app, firstZone = "city") {
     if (!world) return;
     const items = world.items.filter((it) =>
       !it.id.startsWith("map-") &&
+      it.kind !== "domain" &&                      // les écrans du Lab affichent déjà leur titre
+
       ((it.zone === zone && it.kind !== "travel") || (zone === "city" && it.zone === "*")));
     box.innerHTML = items.map((it, i) => `
       <button type="button" class="dw-tag${it.kind === "travel" ? " dw-tag--travel" : ""}" data-open="${esc(it.id)}" tabindex="-1" style="--i:${i}">
