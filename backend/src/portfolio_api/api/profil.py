@@ -13,14 +13,14 @@ router = APIRouter(tags=["profil"])
 
 @router.get("/profil", response_model=CandidatOut)
 async def get_profil(
-    candidat_slug: str = Query(
-        default="exemple-candidat",
+    candidat_slug: str | None = Query(
+        default=None,
         min_length=1,
-        description="Slug unique du candidat",
+        description="Facultatif : un backend = un candidat (API_ROUTES.md), l'unique candidat de la base est renvoyé",
     ),
     repo: CandidatRepository = Depends(get_candidat_repo),
 ) -> CandidatOut:
-    candidat = await repo.get_by_slug(candidat_slug=candidat_slug.strip())
+    candidat = await repo.get_by_slug(candidat_slug=candidat_slug.strip() if candidat_slug else None)
     if not candidat:
         raise HTTPException(status_code=404, detail="Candidat introuvable")
     return candidat

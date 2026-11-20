@@ -11,3 +11,5 @@ build/
 .astro/
 .DS_Store
 .claude
+data/candidats/papa.json
+data/projets/papap.json

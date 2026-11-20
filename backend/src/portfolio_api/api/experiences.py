@@ -18,15 +18,15 @@ async def get_experiences(
         min_length=1,
         description="Filtrer les expériences par lieu (ex. Rouen)",
     ),
-    candidat_slug: str = Query(
-        default="exemple-candidat",
+    candidat_slug: str | None = Query(
+        default=None,
         min_length=1,
-        description="Slug unique du candidat",
+        description="Facultatif : un backend = un candidat (API_ROUTES.md)",
     ),
     repo: CandidatRepository = Depends(get_candidat_repo),
 ) -> list[ExperienceOut]:
     experiences = await repo.get_experiences(
-        candidat_slug=candidat_slug.strip(),
+        candidat_slug=candidat_slug.strip() if candidat_slug else None,
         lieu=lieu,
     )
     if experiences is None:
