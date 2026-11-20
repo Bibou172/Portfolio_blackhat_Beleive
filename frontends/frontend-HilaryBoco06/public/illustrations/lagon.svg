@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A9DDEB"/>
+      <stop offset=".7" stop-color="#e3f3f8"/>
+      <stop offset="1" stop-color="#F4FAFC"/>
+    </linearGradient>
+    <linearGradient id="mer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#55C9D0"/>
+      <stop offset=".5" stop-color="#18A7B5"/>
+      <stop offset="1" stop-color="#0b6a88"/>
+    </linearGradient>
+    <radialGradient id="soleil" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#F4FAFC" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#F4FAFC" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#ciel)"/>
+  <circle cx="1240" cy="230" r="220" fill="url(#soleil)"/>
+  <circle cx="1240" cy="230" r="80" fill="#F1E6D2"/>
+
+  <!-- Nuages -->
+  <g fill="#F4FAFC">
+    <path d="M960 200c0-24 22-42 48-37 9-24 44-33 64-13 24-9 50 9 48 33 20 2 30 18 26 33H964c-11-2-13-11-4-16z"/>
+    <path d="M1380 340c0-18 16-30 36-27 7-18 33-24 48-10 18-6 38 6 36 24 15 2 23 13 20 25h-136c-8-2-10-8-4-12z" opacity=".9"/>
+    <path d="M700 130c0-14 13-24 28-21 6-14 26-19 38-8 14-5 30 5 28 19 12 1 18 10 16 19H704c-6-1-8-6-4-9z" opacity=".8"/>
+  </g>
+
+  <!-- Collines lointaines -->
+  <path d="M760 560c80-70 170-90 260-50 60 26 110 10 170-30 70-46 160-40 230 10 60 42 120 50 180 40v90H760z" fill="#55C9D0" opacity=".45"/>
+
+  <!-- Mer -->
+  <path d="M0 560h1600v340H0z" fill="url(#mer)"/>
+  <g fill="none" stroke="#F4FAFC" stroke-width="4" stroke-linecap="round" opacity=".55">
+    <path d="M820 620q22-14 44 0t44 0"/><path d="M1080 680q22-14 44 0t44 0"/><path d="M1380 640q22-14 44 0t44 0"/>
+    <path d="M940 760q22-14 44 0t44 0"/><path d="M1260 800q22-14 44 0t44 0"/><path d="M1500 740q22-14 44 0t44 0"/>
+  </g>
+
+  <!-- Plage au premier plan -->
+  <path d="M900 900c80-90 220-140 380-150 140-8 240 20 320 60v90z" fill="#F1E6D2"/>
+  <path d="M960 880c90-70 210-104 340-110" fill="none" stroke="#F4FAFC" stroke-width="10" stroke-linecap="round" opacity=".8"/>
+  <g fill="#e4d3b5"><circle cx="1240" cy="840" r="6"/><circle cx="1400" cy="820" r="4"/><circle cx="1500" cy="860" r="5"/></g>
+
+  <!-- Palmiers -->
+  <g transform="translate(1420 790)">
+    <path d="M0 0c-10-80 10-160 60-220" fill="none" stroke="#b99b6b" stroke-width="14" stroke-linecap="round"/>
+    <g fill="#18A7B5">
+      <path d="M60-220c-50-24-100-14-130 18 42-10 86-12 130-18z"/>
+      <path d="M60-220c36-42 90-48 126-22-42 4-84 10-126 22z"/>
+      <path d="M60-220c-12-46 10-90 48-106-12 38-26 74-48 106z"/>
+      <path d="M60-220c54-10 100 16 116 58-38-22-78-42-116-58z"/>
+      <path d="M60-220c-48 4-80 36-86 78 26-32 54-58 86-78z"/>
+    </g>
+    <circle cx="64" cy="-212" r="9" fill="#b99b6b"/>
+  </g>
+
+  <!-- Voilier -->
+  <g transform="translate(1110 600)">
+    <path d="M-70 0h140l-20 26H-50z" fill="#F4FAFC"/>
+    <path d="M-70 0h140l-4 6H-66z" fill="#063B5C"/>
+    <path d="M-2-6v-140" stroke="#063B5C" stroke-width="5" stroke-linecap="round"/>
+    <path d="M2-140c42 34 58 82 54 128H2z" fill="#F4FAFC"/>
+    <path d="M-6-124c-30 30-46 68-52 112h52z" fill="#063B5C"/>
+    <path d="M-2-148l20 8-20 8z" fill="#18A7B5"/>
+  </g>
+
+  <!-- Mouettes -->
+  <g fill="none" stroke="#063B5C" stroke-width="3.5" stroke-linecap="round" opacity=".5">
+    <path d="M1040 330q12-12 24 0q12-12 24 0"/><path d="M1110 370q8-8 16 0q8-8 16 0"/>
+  </g>
+</svg>
