@@ -48,7 +48,10 @@ app.include_router(projets_router, prefix="/api")
 
 # TODO (équipe) : enregistrer vos routeurs
 from portfolio_api.api.routes_graph import router as graph_router
+from portfolio_api.api.routes_stats import router as stats_router
+
 app.include_router(graph_router, prefix="/api")
+app.include_router(stats_router, prefix="/api")
 
 # from portfolio_api.api.routes_candidats import router as candidats_router
 # app.include_router(candidats_router, prefix="/api")
