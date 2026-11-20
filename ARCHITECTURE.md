@@ -165,7 +165,7 @@ graph LR
 // R4 - projets similaires (projets partageant des compétences)
 MATCH (p:Projet {projet_slug: $projet_slug})-[:UTILISE]->(c:Competence)<-[:UTILISE]-(autre:Projet)
 WHERE autre <> p
-RETURN autre.projet_slug AS slug,
+RETURN autre.projet_slug AS projet_slug,
        autre.titre AS titre,
        collect(c.skill_slug) AS competences_communes,
        count(c) AS nb_communes
@@ -184,7 +184,7 @@ RETURN ca {.candidat_slug, .prenom, .nom} AS candidat,
 // R7 - compétences d'un domaine
 MATCH (d:Domaine {domaine_slug: $domaine_slug})<-[:APPARTIENT_A]-(c:Competence)
 RETURN d.domaine_slug AS domaine_slug, d.nom AS domaine_nom,
-       c.skill_slug AS slug, c.nom AS nom
+       c.skill_slug AS skill_slug, c.nom AS nom
 ORDER BY c.nom
 ```
 
