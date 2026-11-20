@@ -2,3 +2,12 @@
 
 Règle (comme dans SmartCity) : un repository ne parle qu'à UNE base et renvoie des dict.
 """
+from __future__ import annotations
+
+from portfolio_api.repositories.candidat_repo import CandidatRepository
+from portfolio_api.repositories.projet_repo import ProjetRepository
+
+__all__ = [
+    "CandidatRepository",
+    "ProjetRepository",
+]

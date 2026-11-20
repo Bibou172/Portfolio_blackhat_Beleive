@@ -3,7 +3,7 @@
 > **Jalon 1** : ce document est la **spécification** du projet.
 > Projet individuel : un portfolio pour une seule personne, avec un frontend et un backend FastAPI.
 
-## 1. Schéma d'architecture
+# 1. Schéma d'architecture
 
 Le frontend appelle uniquement l'API FastAPI. L'API interroge MongoDB (documents) ou Neo4j (relations), jamais le frontend directement.
 
@@ -16,7 +16,7 @@ flowchart LR
     API -->|"graphe de compétences"| N[("Neo4j")]
     M -. "slugs pivots (candidat_slug, projet_slug, skill_slug)" .- N
 ```
-
+t
 **Rôle de chaque base :**
 
 - **MongoDB** stocke les données *descriptives* : la collection `candidats` (profil, expériences, formations, compétences) et la collection `projets` (détails de chaque projet). Elle sert aussi les agrégations (statistiques et top des compétences).
