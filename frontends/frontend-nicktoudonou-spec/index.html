@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cédric Akle — Data Analyst</title>
   <meta name="description" content="Portfolio de Cédric Akle, élève-ingénieur Big Data à l'ESIGELEC : projets data, compétences mesurées et parcours, servis par une API FastAPI, MongoDB et Neo4j.">
-  <meta name="theme-color" content="#171717">
+  <meta name="theme-color" content="#0A0A0E">
   <meta property="og:title" content="Cédric Akle — Data Analyst">
   <meta property="og:description" content="I turn complex data into clarity. Projets, compétences et parcours.">
   <meta property="og:type" content="website">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/sections.css">
 </head>
 <body>
@@ -68,13 +66,19 @@
   <!-- Contenu : rempli par js/router.js -->
   <main id="app" tabindex="-1"></main>
 
-  <!-- Indicateur de section (bas gauche) -->
-  <div class="section-index mono" aria-hidden="true">
-    <span class="js-si-num">00</span><span class="section-index__bar"></span><span class="js-si-label">Intro</span>
-  </div>
+  <!-- Rail de navigation (droite) : une marque par section -->
+  <nav class="rail mono" aria-label="Sections">
+    <a href="#/"><span class="rail__label">Intro</span><span class="rail__tick"></span></a>
+    <a href="#/work"><span class="rail__label">Work</span><span class="rail__tick"></span></a>
+    <a href="#/about"><span class="rail__label">About</span><span class="rail__tick"></span></a>
+    <a href="#/expertise"><span class="rail__label">Expertise</span><span class="rail__tick"></span></a>
+    <a href="#/experience"><span class="rail__label">Experience</span><span class="rail__tick"></span></a>
+    <a href="#/map"><span class="rail__label">Map</span><span class="rail__tick"></span></a>
+    <a href="#/contact"><span class="rail__label">Contact</span><span class="rail__tick"></span></a>
+  </nav>
 
   <!-- Transition entre les pages -->
-  <div class="wipe" aria-hidden="true"></div>
+  <div class="wipe" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <!-- Infobulle du graphe -->
   <div class="graph-tip mono" aria-hidden="true"></div>

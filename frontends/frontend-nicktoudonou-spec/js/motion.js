@@ -59,7 +59,7 @@ export function countUp(el, to) {
   watch.observe(el);
 }
 
-/* ---------- Transition entre pages (balayage diagonal) ---------- */
+/* ---------- Transition entre pages : trois bandes obliques (rouge, ivoire, nuit) ---------- */
 
 export function wipe(render) {
   if (reduced) {
@@ -72,14 +72,14 @@ export function wipe(render) {
   }
   const el = document.querySelector(".wipe");
   return new Promise((resolve) => {
-    el.className = "wipe";
+    el.classList.remove("is-in", "is-out");
     void el.offsetWidth;              // force le navigateur à repartir de la position de départ
     el.classList.add("is-in");
     setTimeout(() => {
       render();
       el.classList.remove("is-in");
       el.classList.add("is-out");
-      setTimeout(() => { el.className = "wipe"; resolve(); }, 580);
-    }, 520);
+      setTimeout(() => { el.classList.remove("is-out"); resolve(); }, 720);
+    }, 640);
   });
 }

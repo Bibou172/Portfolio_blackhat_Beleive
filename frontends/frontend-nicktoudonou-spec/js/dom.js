@@ -72,3 +72,11 @@ export function guardImages(root) {
     else img.addEventListener("error", drop, { once: true });
   });
 }
+
+/* Bouton biseauté : libellé + case flèche. variant = "" | "ghost" | "ink" | "small" (cumulables) */
+export function button(label, href, { variant = "", icon = ARROW, attrs = "" } = {}) {
+  const cls = ["btn", ...variant.split(" ").filter(Boolean).map((v) => `btn--${v}`)].join(" ");
+  const tag = href ? "a" : "button";
+  const target = href ? `href="${esc(href)}"` : 'type="button"';
+  return `<${tag} class="${cls}" ${target} ${attrs}><span class="btn__label">${esc(label)}</span><span class="btn__icon">${icon}</span></${tag}>`;
+}

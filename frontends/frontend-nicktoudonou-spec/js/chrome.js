@@ -1,6 +1,6 @@
 /* ==========================================================================
    CHROME — tout ce qui reste à l'écran : en-tête, menu mobile,
-   barre de progression, indicateur de section.
+   barre de progression, rail des sections, couleur d'accent par section.
    Un seul écouteur de scroll (regroupé avec requestAnimationFrame).
    ========================================================================== */
 
@@ -9,9 +9,9 @@ import { CONFIG } from "./config.js";
 export function initChrome() {
   const header = document.querySelector(".site-header");
   const bar = document.querySelector(".progress span");
-  const siNum = document.querySelector(".js-si-num");
-  const siLabel = document.querySelector(".js-si-label");
-  const navLinks = [...document.querySelectorAll(".nav a")];
+  const rail = document.querySelector(".rail");
+  const navLinks = [...document.querySelectorAll(".nav a, .rail a")];
+  const root = document.documentElement;
 
   /* Disponibilité */
   const status = document.querySelector(".js-status");
@@ -30,7 +30,7 @@ export function initChrome() {
     if (open) {
       menu.hidden = false;
       requestAnimationFrame(() => menu.classList.add("is-open"));
-      header.classList.add("is-dark");
+      header.classList.remove("is-light");
     } else {
       menu.classList.remove("is-open");
       setTimeout(() => { if (!menu.classList.contains("is-open")) menu.hidden = true; }, 650);
@@ -53,16 +53,19 @@ export function initChrome() {
     if (btn.getAttribute("aria-expanded") !== "true") {
       header.classList.toggle("is-scrolled", scrollY > 8);
       const under = document.elementFromPoint(innerWidth / 2, header.offsetHeight + 2);
-      header.classList.toggle("is-dark", Boolean(under?.closest(".dark")));
+      header.classList.toggle("is-light", Boolean(under?.closest(".on-ivory, .case--ivory")));
     }
 
     const mid = document.elementFromPoint(innerWidth / 2, innerHeight * 0.45)?.closest("[data-section]");
     if (mid) {
-      siNum.textContent = mid.dataset.section;
-      siLabel.textContent = mid.dataset.label;
-      siNum.parentElement.classList.toggle("is-hidden", mid.dataset.section === "00");
-      const id = mid.id;
-      navLinks.forEach((a) => a.setAttribute("aria-current", String(a.getAttribute("href") === `#/${id}`)));
+      // Chaque section (ou chaque projet) impose sa couleur : barre, nav, puces…
+      const lit = document.elementFromPoint(innerWidth / 2, innerHeight * 0.45)?.closest("[data-accent]");
+      const accent = lit?.dataset.accent ?? mid.dataset.accent;
+      if (accent && root.style.getPropertyValue("--accent") !== accent) root.style.setProperty("--accent", accent);
+      const id = mid.id || "";
+      const href = id === "intro" ? "#/" : `#/${id}`;
+      navLinks.forEach((a) => a.setAttribute("aria-current", String(a.getAttribute("href") === href)));
+      rail.classList.toggle("is-hidden", !mid.id || mid.id === "intro");
     }
   }
   const onScroll = () => {

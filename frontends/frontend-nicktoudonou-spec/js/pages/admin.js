@@ -6,7 +6,7 @@
 
 import { post, del } from "../api.js";
 import { clearCache, loadProjets } from "../data.js";
-import { esc } from "../dom.js";
+import { esc, ARROW } from "../dom.js";
 
 const FORMS = {
   experience: {
@@ -69,7 +69,7 @@ export function renderAdmin(app) {
   let current = "experience";
 
   app.innerHTML = `
-    <section class="admin" data-section="A" data-label="Admin">
+    <section class="admin on-ivory" data-section="A" data-accent="#E60012" data-label="Admin">
       <div class="container">
         <span class="mono muted">Accès candidat · routes 9 à 12</span>
         <h1 class="admin__title display">Admin</h1>
@@ -113,7 +113,7 @@ export function renderAdmin(app) {
             <input id="del-slug" name="slug" list="del-list" required placeholder="slug du projet">
             <datalist id="del-list">${projets.map((p) => `<option value="${esc(p.slug)}">${esc(p.titre)}</option>`).join("")}</datalist>
           </div>
-          <div class="form__actions"><button class="btn btn--ink" type="submit">Supprimer définitivement</button><span class="js-msg form__msg" role="status"></span></div>
+          <div class="form__actions"><button class="btn btn--ink" type="submit"><span class="btn__label">Supprimer définitivement</span><span class="btn__icon">${ARROW}</span></button><span class="js-msg form__msg" role="status"></span></div>
         </form>`;
       const form = box.querySelector("form");
       form.addEventListener("submit", async (e) => {
@@ -138,7 +138,7 @@ export function renderAdmin(app) {
       <form class="form" novalidate>
         ${def.fields.map(fieldHTML).join("")}
         <div class="form__actions">
-          <button class="btn btn--ink" type="submit">Ajouter ${def.label.toLowerCase()}</button>
+          <button class="btn btn--ink" type="submit"><span class="btn__label">Ajouter ${def.label.toLowerCase()}</span><span class="btn__icon">${ARROW}</span></button>
           <span class="js-msg form__msg" role="status"></span>
         </div>
       </form>`;

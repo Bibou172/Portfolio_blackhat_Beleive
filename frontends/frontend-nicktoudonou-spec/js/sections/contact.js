@@ -1,5 +1,6 @@
 /* ==========================================================================
    06 — CONTACT + pied de page
+   Rouge, plaques noires inclinées : l'énergie d'un écran de fin de partie.
    ========================================================================== */
 
 import { CONFIG } from "../config.js";
@@ -10,25 +11,26 @@ import { reveal } from "../motion.js";
 export function template() {
   const year = new Date().getFullYear();
   return `
-  <section class="section dark contact" id="contact" data-section="06" data-label="Contact">
+  <section class="contact" id="contact" data-section="06" data-label="Contact" data-accent="#F2EEE5">
+    <div class="contact__slab" aria-hidden="true"></div>
     <div class="container">
-      <span class="sec-num mono" style="display:inline-block;min-width:120px;margin-bottom:40px">06 / Contact</span>
-      <h2 class="contact__title" data-reveal>Let's turn ideas<br>into <em class="serif">impact.</em></h2>
-
-      <div class="grid contact__grid">
+      <span class="sec-head__label contact__label mono">06 — Contact</span>
+      <h2 class="contact__title display" data-reveal>Let's turn ideas<br>into <em class="serif">impact.</em></h2>
+      <div class="contact__grid">
         <p class="contact__lead" data-reveal>
           Une alternance, un projet, une question sur la donnée ? Écrivez-moi, je réponds rapidement.
         </p>
-        <div class="contact__links js-links" data-reveal style="--d:120ms"></div>
+        <div class="plates js-links" data-reveal style="--d:120ms"></div>
       </div>
-
-      <footer class="footer mono">
-        <span>© ${year} <span class="js-foot-name">Cédric Akle</span></span>
-        <span class="footer__sig">Explore. Discover. Understand.</span>
-        <span>FastAPI · MongoDB · Neo4j</span>
-        <a href="#/" class="js-top">Haut de page ↑</a>
-      </footer>
     </div>
+    <footer class="footer mono">
+      <div class="container">
+        <span>© ${year} <strong class="js-foot-name">Cédric Akle</strong></span>
+        <span>Explore · Discover · Understand</span>
+        <span>FastAPI · MongoDB · Neo4j</span>
+        <a href="#/">Haut de page ↑</a>
+      </div>
+    </footer>
   </section>`;
 }
 
@@ -36,7 +38,7 @@ function line(label, value, href, download = false) {
   const url = safeUrl(href);
   if (!url) return "";
   const external = url.startsWith("http") && !url.startsWith(location.origin);
-  return `<a href="${esc(url)}"${external ? ' target="_blank" rel="noopener"' : ""}${download ? " download" : ""}>
+  return `<a class="plate" href="${esc(url)}"${external ? ' target="_blank" rel="noopener"' : ""}${download ? " download" : ""}>
     <span class="mono">${esc(label)}</span><strong>${esc(value)}</strong>${ARROW_UP}
   </a>`;
 }

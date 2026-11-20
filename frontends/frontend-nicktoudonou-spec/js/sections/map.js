@@ -4,19 +4,20 @@
    informations pour les lecteurs d'écran et la navigation au clavier.
    ========================================================================== */
 
-import { esc, stateBlock } from "../dom.js";
-import { loadGraph } from "../data.js";
-import { GraphView, TYPE_LABEL } from "../graph.js";
+import { esc, stateBlock, button } from "../dom.js";
+
+const RESHUFFLE = `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4" stroke="currentColor" stroke-width="1.5"/></svg>`;
+import { loadGraph, loadProfil } from "../data.js";
+import { GraphView, TYPE_LABEL, grapheDeSecours } from "../graph.js";
 
 export function template() {
   return `
-  <section class="section dark map" id="map" data-section="05" data-label="Map">
-    <span class="bignum" aria-hidden="true">05</span>
+  <section class="map" id="map" data-section="05" data-label="Map" data-accent="#D7FF46">
     <div class="container">
-      <header class="sec-head grid">
-        <span class="sec-num mono">05 / Map</span>
-        <h2 class="sec-title" data-reveal>The<br><em class="serif">graph</em></h2>
-        <p class="sec-intro" data-reveal style="--d:120ms">
+      <header class="sec-head">
+        <span class="sec-head__label mono">05 — Map</span>
+        <h2 class="sec-head__title display" data-reveal>From raw data to <em class="serif">insight</em></h2>
+        <p class="sec-head__intro" data-reveal style="--d:120ms">
           Mon parcours tel qu'il est stocké dans Neo4j : candidat → projets → compétences → domaines.
           Survolez un nœud, glissez-le, cliquez sur un projet.
         </p>
@@ -34,7 +35,7 @@ export function template() {
           <span><i class="l-domaine"></i>Domaine</span>
         </div>
         <span class="js-map-count">src: neo4j · GET /api/graph/competences</span>
-        <button class="map__reset mono" type="button">Réorganiser</button>
+        ${button("Réorganiser", "", { variant: "ghost small", icon: RESHUFFLE, attrs: 'data-reset' })}
       </div>
 
       <div class="sr-only js-map-text"></div>
@@ -49,18 +50,26 @@ export function mount(root) {
   let alive = true;
   let view = null;
 
-  loadGraph().then((g) => {
+  loadGraph().then(async (g) => {
     if (!alive) return;
+    if (g.nodes.length < 4) {
+      // Neo4j ne relie encore aucun projet à mon candidat : on montre le graphe du profil.
+      const profil = await loadProfil().catch(() => null);
+      g = grapheDeSecours(profil);
+      root.querySelector(".map__bar").insertAdjacentHTML("afterend",
+        `<p class="map__note mono">Aperçu construit depuis le profil MongoDB : aucun projet n'est encore relié à ce candidat dans Neo4j.</p>`);
+    }
     if (!g.nodes.length) {
       stage.insertAdjacentHTML("beforeend", stateBlock(null, { empty: true, hint: "Le graphe est vide : lance « just seed »." }));
       return;
     }
     view = new GraphView(canvas, g, {
       mode: "map",
+      palette: { accent: "215,255,70", base: "242,238,229" },
       tip,
       onSelect: (node) => { location.hash = `#/projet/${encodeURIComponent(node.id.replace(/^projet:/, ""))}`; },
     });
-    root.querySelector(".map__reset").addEventListener("click", () => view.reheat());
+    root.querySelector("[data-reset]").addEventListener("click", () => view.reheat());
 
     const count = (t) => g.nodes.filter((n) => n.type === t).length;
     root.querySelector(".js-map-count").textContent =

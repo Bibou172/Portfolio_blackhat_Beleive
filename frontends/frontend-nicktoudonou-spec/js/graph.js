@@ -31,7 +31,9 @@ export const TYPE_LABEL = {
 };
 
 export class GraphView {
-  constructor(canvas, data, { mode = "map", onSelect = null, tip = null } = {}) {
+  constructor(canvas, data, { mode = "map", onSelect = null, tip = null, palette = {} } = {}) {
+    /* couleurs "r,g,b" : accent (candidat, domaines, survol) et base (projets, compétences, liens) */
+    this.pal = { accent: RGB.lime, base: RGB.paper, ...palette };
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.mode = mode;
@@ -137,7 +139,7 @@ export class GraphView {
     const s = this.scale;
     const cx = this.w / 2;
     const cy = this.h / 2;
-    const charge = (this.mode === "hero" ? 2600 : 4200) * s * s;
+    const charge = (this.mode === "hero" ? 4200 : 4200) * s * s;
 
     // 1. Répulsion entre tous les nœuds
     for (let i = 0; i < nodes.length; i += 1) {
@@ -159,7 +161,7 @@ export class GraphView {
     }
 
     // 2. Liens = ressorts
-    const restScale = s * (this.mode === "hero" ? 0.8 : 1);
+    const restScale = s * (this.mode === "hero" ? 1.25 : 1);
     for (const l of this.links) {
       const dx = l.t.x - l.s.x;
       const dy = l.t.y - l.s.y;
@@ -240,7 +242,7 @@ export class GraphView {
       const lit = H && (l.s === H || l.t === H);
       const base = this.mode === "hero" ? 0.26 : 0.2;
       const alpha = lit ? 0.95 : H ? 0.05 : base;
-      ctx.strokeStyle = `rgba(${lit ? RGB.lime : RGB.paper},${alpha})`;
+      ctx.strokeStyle = `rgba(${lit ? this.pal.accent : this.pal.base},${alpha})`;
       ctx.beginPath();
       ctx.moveTo(l.s.dx, l.s.dy);
       ctx.lineTo(l.s.dx + (l.t.dx - l.s.dx) * grow, l.s.dy + (l.t.dy - l.s.dy) * grow);
@@ -253,17 +255,17 @@ export class GraphView {
       ctx.globalAlpha = dim ? 0.2 : 1;
       const r = n.r * (n === H ? 1.6 : 1) * (this.mode === "map" ? 1.1 : 1);
       if (n.st.shape === "square") {
-        ctx.fillStyle = n.type === "candidat" ? `rgb(${RGB.lime})` : `rgb(${RGB.paper})`;
+        ctx.fillStyle = n.type === "candidat" ? `rgb(${this.pal.accent})` : `rgb(${this.pal.base})`;
         ctx.fillRect(n.dx - r, n.dy - r, r * 2, r * 2);
       } else if (n.st.shape === "ring") {
-        ctx.strokeStyle = `rgb(${RGB.lime})`;
+        ctx.strokeStyle = `rgb(${this.pal.accent})`;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(n.dx, n.dy, r, 0, Math.PI * 2);
         ctx.stroke();
         ctx.lineWidth = 1;
       } else {
-        ctx.fillStyle = n === H ? `rgb(${RGB.lime})` : `rgba(${RGB.paper},0.85)`;
+        ctx.fillStyle = n === H ? `rgb(${this.pal.accent})` : `rgba(${this.pal.base},0.85)`;
         ctx.beginPath();
         ctx.arc(n.dx, n.dy, r, 0, Math.PI * 2);
         ctx.fill();
@@ -280,7 +282,7 @@ export class GraphView {
       if (this.mode === "hero") alpha = 0.6;
       if (strong) alpha = 1;
       ctx.font = `500 ${isComp ? 9.5 : 10.5}px "IBM Plex Mono", ui-monospace, monospace`;
-      ctx.fillStyle = `rgba(${n === H ? RGB.lime : RGB.paper},${alpha})`;
+      ctx.fillStyle = `rgba(${n === H ? this.pal.accent : this.pal.base},${alpha})`;
       const text = String(n.label).toUpperCase();
       const right = n.dx > this.w - 150;
       ctx.textAlign = right ? "right" : "left";

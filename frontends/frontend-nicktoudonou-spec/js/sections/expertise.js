@@ -1,35 +1,37 @@
 /* ==========================================================================
    03 — EXPERTISE (route 5 : statistiques, agrégation MongoDB)
-   Aucun pourcentage inventé : chaque barre = nombre réel de projets.
+   Architecture monumentale : chaque compétence est une colonne dont la
+   hauteur = nombre réel de projets qui l'utilisent. Aucun pourcentage inventé.
    ========================================================================== */
 
 import { esc, domaineLabel, stateBlock } from "../dom.js";
 import { loadStats } from "../data.js";
+import { paintMonolith, StaticScene } from "../scenes.js";
 import { reveal } from "../motion.js";
 
 export function template() {
   return `
-  <section class="section dark expertise" id="expertise" data-section="03" data-label="Expertise">
-    <span class="bignum" aria-hidden="true">03</span>
+  <section class="expertise" id="expertise" data-section="03" data-label="Expertise" data-accent="#E8262E">
+    <canvas class="expertise__scene" aria-hidden="true"></canvas>
+    <div class="expertise__fade" aria-hidden="true"></div>
     <div class="container">
-      <header class="sec-head grid">
-        <span class="sec-num mono">03 / Expertise</span>
-        <h2 class="sec-title" data-reveal>Measured,<br><em class="serif">not claimed</em></h2>
-        <p class="sec-intro" data-reveal style="--d:120ms">
-          Pas de jauges inventées. Chaque compétence est mesurée par son usage réel
-          dans mes projets, calculé par une agrégation MongoDB.
+      <header class="sec-head">
+        <span class="sec-head__label mono">03 — Expertise</span>
+        <h2 class="sec-head__title display" data-reveal>Measured, <em class="serif">not claimed</em></h2>
+        <p class="sec-head__intro" data-reveal style="--d:120ms">
+          Chaque colonne est une compétence. Sa hauteur = le nombre de mes projets
+          qui l'utilisent, calculé par une agrégation MongoDB.
         </p>
       </header>
-      <div class="grid expertise__grid js-expertise">
-        <div class="domain"><div class="skeleton" style="height:220px"></div></div>
-        <div class="domain"><div class="skeleton" style="height:220px"></div></div>
-      </div>
+      <div class="js-expertise"><div class="skeleton" style="height:380px"></div></div>
     </div>
   </section>`;
 }
 
 export function mount(root) {
-  const box = root.querySelector(".js-expertise");
+  const section = root.querySelector("#expertise");
+  const box = section.querySelector(".js-expertise");
+  const scene = new StaticScene(section.querySelector(".expertise__scene"), paintMonolith, 5);
   let alive = true;
 
   loadStats().then(({ items, autres, source }) => {
@@ -49,35 +51,39 @@ export function mount(root) {
     const ordered = [...groups.entries()].sort((a, b) =>
       b[1].reduce((n, s) => n + s.nb_projets, 0) - a[1].reduce((n, s) => n + s.nb_projets, 0));
 
-    const domains = ordered.map(([slug, skills], gi) => `
-      <div class="domain" data-reveal style="--d:${(gi % 2) * 120}ms">
-        <div class="domain__head">
-          <h3>${esc(domaineLabel(slug))}</h3>
-          <span class="mono">${skills.length} compétence${skills.length > 1 ? "s" : ""}</span>
+    let k = 0;
+    const monument = ordered.map(([slug, skills]) => `
+      <div class="monument__group">
+        <div class="monument__cols">
+          ${skills.map((s) => `
+            <div class="col" style="--h:${18 + (s.nb_projets / max) * 82}%;--d:${(k++) * 70}ms"
+                 title="${esc(s.nom)} : ${s.nb_projets} projet${s.nb_projets > 1 ? "s" : ""}${s.derniere_annee ? `, dernier en ${s.derniere_annee}` : ""}">
+              <span class="col__value">${s.nb_projets}</span>
+              <span class="col__name mono">${esc(s.nom)}</span>
+            </div>`).join("")}
         </div>
-        ${skills.map((s, i) => `
-          <div class="skill">
-            <span class="skill__name">${esc(s.nom)}</span>
-            <span class="skill__bar" aria-hidden="true"><i style="--w:${(s.nb_projets / max) * 100}%;--d:${200 + i * 80}ms"></i></span>
-            <span class="skill__facts mono"><strong>${s.nb_projets}</strong>projet${s.nb_projets > 1 ? "s" : ""}${s.derniere_annee ? ` · ${s.derniere_annee}` : ""}</span>
-          </div>`).join("")}
+        <div class="monument__label mono"><strong>${esc(domaineLabel(slug))}</strong><span>${skills.length}</span></div>
       </div>`).join("");
 
+    const list = items.map((s) => `<li>${esc(s.nom)} : ${s.nb_projets} projet${s.nb_projets > 1 ? "s" : ""}</li>`).join("");
     const also = autres.length ? `
       <div class="expertise__also" data-reveal>
         <h3 class="mono">Également pratiqué</h3>
         <ul class="tags">${autres.map((c) => `<li>${esc(c.nom)}</li>`).join("")}</ul>
       </div>` : "";
 
-    box.innerHTML = `${domains}${also}
-      <p class="expertise__note mono" data-reveal>
-        <span>Barre = nombre de projets utilisant la compétence</span>
+    box.innerHTML = `
+      <div class="monument" data-reveal role="img" aria-label="Compétences classées par nombre de projets">${monument}</div>
+      <ul class="sr-only">${list}</ul>
+      <p class="expertise__note mono">
+        <span>Hauteur = nombre de projets · chiffre au sommet = valeur exacte</span>
         <span>src: ${esc(source)}</span>
-      </p>`;
+      </p>
+      ${also}`;
     reveal(box);
   }).catch((error) => {
     if (alive) box.innerHTML = stateBlock(error, { hint: "Les statistiques viennent de GET /api/stats/competences." });
   });
 
-  return () => { alive = false; };
+  return () => { alive = false; scene.destroy(); };
 }
