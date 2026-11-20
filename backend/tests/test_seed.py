@@ -251,3 +251,15 @@ async def test_main_ferme_les_connexions_meme_en_cas_d_erreur(monkeypatch):
 
     close_mongo.assert_awaited_once()
     close_neo4j.assert_awaited_once()
+
+
+def test_normalize_projets_accepte_candidat_slugs():
+    """Format de data/projets/_exemple.json : candidat_slugs (liste) -> candidat_slug (ARCHITECTURE.md §3.2)."""
+    projets = [
+        {"projet_slug": "a", "candidat_slugs": ["papa-daouda"]},
+        {"projet_slug": "b", "candidat_slug": "papa-daouda"},
+    ]
+    res = seed.normalize_projets(projets)
+    assert [p["candidat_slug"] for p in res] == ["papa-daouda", "papa-daouda"]
+    assert all("candidat_slugs" not in p for p in res)
+    assert "candidat_slug" not in projets[0]  # données source intactes

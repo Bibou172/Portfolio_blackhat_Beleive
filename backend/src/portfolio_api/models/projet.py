@@ -9,7 +9,7 @@ class ProjetOut(BaseModel):
     titre: str
     description: str
     description_longue: str | None = None
-    annee: int = Field(ge=1900, le=2100)
+    annee: int | None = Field(default=None, ge=1900, le=2100)  # null si l'année n'est pas renseignée dans data/
     competences: list[str] = Field(default_factory=list)
     lien_repo: str | None = None
     lien_demo: str | None = None

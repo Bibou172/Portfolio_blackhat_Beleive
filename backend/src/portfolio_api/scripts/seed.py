@@ -31,6 +31,20 @@ def load_member_files(kind: str) -> list[dict]:
     return docs
 
 
+def normalize_projets(projets: list[dict]) -> list[dict]:
+    """Accepte le format de data/projets/_exemple.json (`candidat_slugs`, une liste)
+    et le ramène au modèle d'ARCHITECTURE.md §3.2 (`candidat_slug`, un seul candidat).
+    """
+    normalises = []
+    for p in projets:
+        p = dict(p)
+        slugs = p.pop("candidat_slugs", None) or []
+        if not p.get("candidat_slug") and slugs:
+            p["candidat_slug"] = slugs[0]
+        normalises.append(p)
+    return normalises
+
+
 async def seed_mongo(candidats: list[dict], projets: list[dict]) -> None:
     """Vide puis remplit `candidats` et `projets` (ARCHITECTURE.md §3), puis crée les index (§3.3)."""
     db = get_mongo_db()
@@ -145,7 +159,7 @@ async def seed_neo4j(candidats: list[dict], projets: list[dict]) -> None:
 
 async def main() -> None:
     candidats = load_member_files("candidats")
-    projets = load_member_files("projets")
+    projets = normalize_projets(load_member_files("projets"))
     print(f"[seed] {len(candidats)} candidat(s), {len(projets)} projet(s) trouvés dans {DATA_DIR}")
     try:
         await seed_mongo(candidats, projets)

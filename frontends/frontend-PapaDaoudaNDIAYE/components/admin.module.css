@@ -1,0 +1,109 @@
+.page {
+  min-height: 100vh;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: calc(var(--hud-h) + 1.5rem) 1.25rem 190px;
+}
+
+.warning {
+  padding: 1rem 1.2rem;
+  border-left: 4px solid var(--orange);
+  margin: 1rem 0 1.6rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tab[aria-selected="true"] {
+  background: var(--pink);
+  color: var(--night);
+  font-weight: 700;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.label {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.required {
+  color: var(--pink);
+}
+
+.input {
+  min-height: 44px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(14, 8, 32, 0.8);
+  color: var(--text);
+  font: inherit;
+}
+
+.input:focus-visible {
+  border-color: var(--teal);
+  outline: 3px solid var(--yellow);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--pink);
+}
+
+textarea.input {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.error {
+  font-size: 0.88rem;
+  color: #ff8fbb;
+}
+
+.status {
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.ok {
+  background: rgba(46, 230, 214, 0.15);
+  border: 1px solid var(--teal);
+}
+
+.ko {
+  background: rgba(255, 61, 139, 0.12);
+  border: 1px solid var(--pink);
+}

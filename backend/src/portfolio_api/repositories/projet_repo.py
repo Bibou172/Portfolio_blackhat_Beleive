@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import APIRouter, Depends
 from pymongo.asynchronous.database import AsyncDatabase
 from portfolio_api.db.mongo import get_mongo_db
@@ -19,13 +21,16 @@ class ProjetRepository:
 
     async def list_projets(
         self,
-        candidat_slug: str,
+        candidat_slug: str | None = None,
         competence: str | None = None,
     ) -> list[ProjetOut]:
-        """R2 : Liste les projets d'un candidat triés par année décroissante,
-        filtrables par skill_slug.
+        """R2 : Liste les projets triés par année décroissante, filtrables par skill_slug.
+
+        Un backend = un candidat (API_ROUTES.md) : sans slug (ni CANDIDAT_SLUG),
+        tous les projets de la base sont ceux du candidat.
         """
-        query: dict = {"candidat_slug": candidat_slug}
+        slug = candidat_slug or os.getenv("CANDIDAT_SLUG") or None
+        query: dict = {"candidat_slug": slug} if slug else {}
         if competence:
             query["competences"] = competence.strip().lower()
 

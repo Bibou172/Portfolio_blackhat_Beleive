@@ -18,15 +18,15 @@ async def list_projets(
         min_length=1,
         description="Filtrer par skill_slug (ex. mongodb, python)",
     ),
-    candidat_slug: str = Query(
-        default="exemple-candidat",
+    candidat_slug: str | None = Query(
+        default=None,
         min_length=1,
-        description="Slug unique du candidat",
+        description="Facultatif : un backend = un candidat (API_ROUTES.md)",
     ),
     repo: ProjetRepository = Depends(get_projet_repo),
 ) -> list[ProjetOut]:
     return await repo.list_projets(
-        candidat_slug=candidat_slug.strip(),
+        candidat_slug=candidat_slug.strip() if candidat_slug else None,
         competence=competence,
     )
 

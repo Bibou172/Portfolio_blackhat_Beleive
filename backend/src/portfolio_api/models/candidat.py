@@ -27,7 +27,7 @@ class FormationOut(BaseModel):
 
     ecole: str
     diplome: str
-    lieu: str
+    lieu: str | None = None  # optionnel (API_ROUTES.md, route 10)
     debut: str
     fin: str | None = None
 
