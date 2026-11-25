@@ -113,6 +113,5 @@ SHOW CONSTRAINTS;
 
 | Membre | Portfolio | Lien déployé | Code source |
 |---|---|---|---|
-| Papa Daouda NDIAYE (`@PapaDaoudaNDIAYE`) | Sunset Drive — portfolio jouable (Next.js + Phaser) | `https://portfolio-papa-one.vercel.app` | [frontend-PapaDaoudaNDIAYE](https://github.com/nosql-esigelec/2026-2027-rouen-portfolio-blackhat/tree/main/frontends/frontend-PapaDaoudaNDIAYE) |
-
-| `@nicktoudonou-spec` | `<Cédric Akle — Data Analyst>` | `https://cedric-akle-portfolio.vercel.app/#/lab` | [frontend-nicktoudonou-spec](https://github.com/nosql-esigelec/2026-2027-rouen-portfolio-blackhat/tree/main/frontends/frontend-nicktoudonou-spec) |
+| Papa Daouda NDIAYE (`@PapaDaoudaNDIAYE`) | Sunset Drive — portfolio jouable (Next.js + Phaser) | <https://portfolio-papa-one.vercel.app> | [frontend-PapaDaoudaNDIAYE](https://github.com/nosql-esigelec/2026-2027-rouen-portfolio-blackhat/tree/main/frontends/frontend-PapaDaoudaNDIAYE) |
+| Cédric Akle (`@nicktoudonou-spec`) | Portfolio Data Analyst | <https://cedric-akle-portfolio.vercel.app/#/lab> | [frontend-nicktoudonou-spec](https://github.com/nosql-esigelec/2026-2027-rouen-portfolio-blackhat/tree/main/frontends/frontend-nicktoudonou-spec) |
