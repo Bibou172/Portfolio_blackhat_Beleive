@@ -5,14 +5,13 @@
  */
 import type { Competence, Experience, Formation, Profil, Projet } from "./types";
 
-const FICHIER = (import.meta.env.VITE_CANDIDAT_FILE as string | undefined) ?? "HilaryBoco06";
-
-const candidatsBruts = import.meta.glob("../../../../data/candidats/*.json", { eager: true, import: "default" });
-const projetsBruts = import.meta.glob("../../../../data/projets/*.json", { eager: true, import: "default" });
+// Un seul fichier ciblé : les données des autres membres ne doivent pas entrer dans ce bundle.
+// data/ est ignoré par Git : si le fichier est absent au build, l'objet est vide et seule l'API est utilisée.
+const candidatsBruts = import.meta.glob("../../../../data/candidats/HilaryBoco06.json", { eager: true, import: "default" });
+const projetsBruts = import.meta.glob("../../../../data/projets/HilaryBoco06.json", { eager: true, import: "default" });
 
 function trouver(fichiers: Record<string, unknown>): unknown {
-  const cle = Object.keys(fichiers).find((k) => k.endsWith(`/${FICHIER}.json`));
-  return cle ? fichiers[cle] : undefined;
+  return Object.values(fichiers)[0];
 }
 
 type Brut = Record<string, any>;
@@ -47,6 +46,7 @@ function normaliserProfil(c: Brut): Profil {
     bio: c.bio,
     email: c.email,
     telephone: c.telephone,
+    email_personnel: c.email_personnel,
     liens: c.liens,
     experiences: (c.experiences ?? []) as Experience[],
     formations: (c.formations ?? []) as Formation[],

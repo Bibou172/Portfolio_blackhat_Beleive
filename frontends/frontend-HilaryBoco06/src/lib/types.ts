@@ -40,6 +40,8 @@ export interface Profil {
   email?: string;
   /** Facultatif (hors contrat API). */
   telephone?: string;
+  /** Facultatif (hors contrat API) : seconde adresse affichée après `email`. */
+  email_personnel?: string;
   liens?: Liens;
   experiences: Experience[];
   formations: Formation[];

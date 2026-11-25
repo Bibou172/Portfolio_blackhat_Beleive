@@ -37,12 +37,16 @@ Le port **5173** fait déjà partie de `CORS_ORIGINS` dans le `.env` du dépôt 
 
 ## Déploiement (Vercel)
 
-1. Sur Vercel : **Add New Project** → importer le dépôt GitHub.
-2. **Root Directory** : `frontends/frontend-HilaryBoco06` ; laisser cochée l'option *Include files outside of the Root Directory* (le build lit `data/` en repli).
-3. **Environment Variables** : `VITE_API_URL` = URL HTTPS de l'API d'équipe déployée (sans `/` final). Le reste est déjà dans [`vercel.json`](./vercel.json) : build Vite, réécriture SPA (`/projets/:slug` fonctionne en accès direct), cache longue durée des fichiers statiques.
+Le déploiement se fait **depuis le poste qui possède `data/`**, car ce dossier est ignoré par Git. Ne pas brancher le déploiement automatique GitHub : le build n'aurait ni le téléphone, ni l'adresse personnelle, ni les points forts.
+
+1. `npx vercel login`, puis `npx vercel link` dans ce dossier.
+2. Variable `VITE_API_URL` (production) = URL HTTPS de l'API d'équipe (sans `/` final). Le reste est dans [`vercel.json`](./vercel.json) : build Vite, réécriture SPA (`/projets/:slug` fonctionne en accès direct), cache longue durée, cron quotidien.
+3. `npx vercel pull --environment=production`, `npx vercel build --prod`, puis `npx vercel deploy --prebuilt --prod` : le build est local, les fichiers JSON bruts ne sont pas envoyés.
 4. Côté backend (projet Vercel de l'API) : ajouter l'URL du frontend dans `CORS_ORIGINS`, sinon le navigateur bloque les appels.
 
-Sans `VITE_API_URL`, ou si l'API est injoignable, le site reste complet grâce aux fichiers `data/` (la première erreur réseau bascule toute la session sur `data/`, sans attente répétée).
+Sans `VITE_API_URL`, ou si l'API est injoignable, le site reste complet grâce aux fichiers `data/` (si `/api/health` ne répond pas, toute la session bascule sur `data/`, sans attente répétée).
+
+`api/reveil.js` est appelée chaque jour par le cron Vercel : elle lit le graphe via l'API pour limiter la mise en pause de Neo4j Aura Free (72 h d'inactivité). Contournement non officiel, sans garantie.
 
 ## Données
 
@@ -54,7 +58,7 @@ Aucun contenu professionnel n'est écrit en dur dans le frontend.
 Une section sans données est masquée. En développement, un badge en bas à gauche indique la source utilisée (API, `data/` ou aucune).
 
 Champs **facultatifs** reconnus en plus du contrat (affichés seulement s'ils existent) :
-- profil : `telephone`, `recherche` (ex. « Recherche une alternance… »), `points_forts` (liste) ;
+- profil : `telephone`, `email_personnel`, `recherche` (ex. « Recherche une alternance… »), `points_forts` (liste) ;
 - projet : `contexte`, `probleme`, `role`, `fonctionnalites` (liste), `decisions` (liste), `images` (URLs), `metriques` (objet).
 
 **CV et photo** : déposez `public/cv.pdf` et `public/images/photo.jpg` (dossier à créer). Le bouton « Télécharger mon CV » et la photo apparaissent alors automatiquement.

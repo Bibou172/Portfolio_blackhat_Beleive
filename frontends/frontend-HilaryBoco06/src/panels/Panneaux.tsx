@@ -4,7 +4,7 @@ import { ArrowRight, Briefcase, CheckCircle2, Github, GraduationCap, Linkedin, M
 import { useProfil } from "@/lib/ProfilContext";
 import { useRessource } from "@/lib/hooks";
 import { getGraphe, getProjets, getStatsCompetences } from "@/lib/portfolio";
-import { libelleDomaine, periode, trierDomaines } from "@/lib/format";
+import { emailsDe, libelleDomaine, periode, trierDomaines } from "@/lib/format";
 import { SITE } from "@/lib/site";
 import SkillGraph from "@/components/SkillGraph";
 import type { IdObjet } from "@/scene/objets";
@@ -153,14 +153,14 @@ function PanneauContact() {
   return (
     <div className="space-y-3">
       <p className="mb-4 leading-relaxed text-ink/75">Une opportunité, une question, un projet ? Je réponds rapidement.</p>
-      {p?.email && (
-        <a href={`mailto:${p.email}`} className={lien}>
+      {emailsDe(p).map((email) => (
+        <a key={email} href={`mailto:${email}`} className={lien}>
           <span className={`${pastille} bg-gradient-to-br from-ocean-800 to-lagon-600`}>
             <Mail className="h-5 w-5" aria-hidden />
           </span>
-          <span className="min-w-0 truncate">{p.email}</span>
+          <span className="min-w-0 truncate">{email}</span>
         </a>
-      )}
+      ))}
       {p?.telephone && (
         <a href={`tel:${p.telephone.replace(/\s/g, "")}`} className={lien}>
           <span className={`${pastille} bg-gradient-to-br from-lagon-600 to-lagon-400`}>

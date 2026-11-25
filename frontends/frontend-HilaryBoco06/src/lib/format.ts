@@ -1,3 +1,5 @@
+import type { Profil } from "./types";
+
 /** Mise en forme : dates YYYY-MM, libellés de domaines, initiales. */
 
 const MOIS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
@@ -55,4 +57,9 @@ export function initiales(prenom?: string, nom?: string): string {
 
 export function nomComplet(prenom?: string, nom?: string): string {
   return [prenom, nom].filter(Boolean).join(" ");
+}
+
+/** Adresses e-mail à afficher, sans doublon : celle du contrat API puis l'adresse personnelle. */
+export function emailsDe(p: Pick<Profil, "email" | "email_personnel"> | null): string[] {
+  return [...new Set([p?.email, p?.email_personnel].filter((e): e is string => Boolean(e)))];
 }

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Check, Copy, Github, Linkedin, Mail, Phone, Send } from "lucide-react";
 import { useProfil } from "@/lib/ProfilContext";
+import { emailsDe } from "@/lib/format";
 import { SITE } from "@/lib/site";
 import SectionHeader from "@/components/SectionHeader";
 import Reveal from "@/components/Reveal";
@@ -66,15 +67,14 @@ function Formulaire({ email }: { email: string }) {
 
 export default function Contact() {
   const { data: p } = useProfil();
-  const [copie, setCopie] = useState(false);
+  const [copie, setCopie] = useState<string | null>(null);
   const github = p?.liens?.github ?? `https://github.com/${SITE.githubPseudo}`;
 
-  const copier = async () => {
-    if (!p?.email) return;
+  const copier = async (email: string) => {
     try {
-      await navigator.clipboard.writeText(p.email);
-      setCopie(true);
-      setTimeout(() => setCopie(false), 2000);
+      await navigator.clipboard.writeText(email);
+      setCopie(email);
+      setTimeout(() => setCopie(null), 2000);
     } catch {
       /* presse-papiers indisponible */
     }
@@ -98,19 +98,19 @@ export default function Contact() {
             intro={p?.recherche ?? "Une opportunité d'emploi, d'alternance ou de projet ? Échangeons : je réponds rapidement."}
           />
           <Reveal as="ul" className="space-y-3">
-            {p?.email && (
-              <li className="carte flex items-center justify-between gap-3 p-4">
-                <a href={`mailto:${p.email}`} className="flex min-w-0 items-center gap-3 font-medium text-ocean-900 hover:text-lagon-700">
+            {emailsDe(p).map((email) => (
+              <li key={email} className="carte flex items-center justify-between gap-3 p-4">
+                <a href={`mailto:${email}`} className="flex min-w-0 items-center gap-3 font-medium text-ocean-900 hover:text-lagon-700">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-ocean-800 to-lagon-600 text-white">
                     <Mail className="h-5 w-5" aria-hidden />
                   </span>
-                  <span className="truncate">{p.email}</span>
+                  <span className="truncate">{email}</span>
                 </a>
-                <button type="button" onClick={copier} className="rounded-full p-2 text-ink/50 hover:bg-ecume-100 hover:text-ocean-900" aria-label="Copier l'adresse email">
-                  {copie ? <Check className="h-4 w-4 text-lagon-600" /> : <Copy className="h-4 w-4" />}
+                <button type="button" onClick={() => copier(email)} className="rounded-full p-2 text-ink/50 hover:bg-ecume-100 hover:text-ocean-900" aria-label={`Copier l'adresse ${email}`}>
+                  {copie === email ? <Check className="h-4 w-4 text-lagon-600" /> : <Copy className="h-4 w-4" />}
                 </button>
               </li>
-            )}
+            ))}
             {p?.telephone && (
               <li>
                 <a
