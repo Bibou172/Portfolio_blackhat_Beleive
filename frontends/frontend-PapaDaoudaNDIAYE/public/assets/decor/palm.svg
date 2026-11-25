@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="320" viewBox="0 0 200 320">
+  <!-- Palmier original en silhouette (pied centré en bas). -->
+  <g fill="#160a2c">
+    <path d="M96 320 C 98 250, 104 180, 118 96 L 128 98 C 116 180, 110 250, 110 320 Z"/>
+    <g stroke="#160a2c" stroke-width="2">
+      <path d="M122 92 C 90 60, 50 58, 12 84 C 52 70, 86 76, 120 100 Z"/>
+      <path d="M122 92 C 100 50, 70 28, 30 26 C 66 40, 94 62, 118 98 Z"/>
+      <path d="M122 92 C 130 50, 150 26, 186 18 C 160 40, 140 64, 126 98 Z"/>
+      <path d="M122 92 C 158 70, 186 76, 198 104 C 176 88, 150 88, 124 100 Z"/>
+      <path d="M122 92 C 150 110, 168 140, 170 176 C 156 146, 140 120, 120 102 Z"/>
+      <path d="M122 92 C 92 110, 70 138, 64 170 C 80 140, 100 118, 124 102 Z"/>
+    </g>
+    <circle cx="118" cy="100" r="8"/>
+  </g>
+  <!-- Liseré néon sur le tronc -->
+  <path d="M110 320 C 110 250, 116 180, 128 98" fill="none" stroke="#ff3d8b" stroke-width="1.5" opacity="0.55"/>
+</svg>

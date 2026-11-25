@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4FAFC"/>
+      <stop offset="1" stop-color="#A9DDEB"/>
+    </linearGradient>
+    <linearGradient id="mer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#55C9D0"/>
+      <stop offset="1" stop-color="#063B5C"/>
+    </linearGradient>
+    <linearGradient id="faisceau" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#55C9D0" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#55C9D0" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="1200" fill="url(#ciel)"/>
+
+  <!-- Nuages -->
+  <g fill="#F4FAFC">
+    <path d="M80 260c0-22 20-38 44-34 8-22 40-30 58-12 22-8 46 8 44 30 18 2 28 16 24 30H84c-10-2-12-10-4-14z"/>
+    <path d="M360 420c0-16 15-27 33-24 6-16 29-21 42-8 16-5 33 5 32 21 13 1 20 11 17 21H363c-7-1-9-7-3-10z" opacity=".9"/>
+  </g>
+
+  <!-- Faisceaux -->
+  <path d="M330 520L640 430v120z" fill="url(#faisceau)"/>
+
+  <!-- Rochers -->
+  <path d="M120 1000c30-70 90-110 160-110 40 0 70-30 120-20 60 12 100 60 120 130z" fill="#0b4f78"/>
+  <path d="M180 990c20-40 60-60 100-60" fill="none" stroke="#2b7fa8" stroke-width="10" stroke-linecap="round"/>
+  <path d="M60 1040c20-40 60-60 110-56 30-30 70-30 100-6l-10 70z" fill="#063B5C"/>
+
+  <!-- Phare -->
+  <g transform="translate(330 0)">
+    <path d="M-50 900l18-330h64l18 330z" fill="#F4FAFC" stroke="#063B5C" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M-43 780h86l3 60h-92z" fill="#18A7B5"/>
+    <path d="M-37 660h74l3 54h-80z" fill="#18A7B5"/>
+    <rect x="-44" y="548" width="88" height="22" rx="6" fill="#063B5C"/>
+    <rect x="-30" y="490" width="60" height="58" rx="8" fill="#F1E6D2" stroke="#063B5C" stroke-width="5"/>
+    <circle cy="519" r="14" fill="#55C9D0"/>
+    <path d="M-40 490l40-40 40 40z" fill="#063B5C" stroke="#063B5C" stroke-width="5" stroke-linejoin="round"/>
+    <circle cy="444" r="7" fill="#063B5C"/>
+    <rect x="-12" y="840" width="24" height="44" rx="10" fill="#063B5C"/>
+  </g>
+
+  <!-- Mer -->
+  <path d="M0 1010c80-20 160-20 240 0s160 20 240 0 120-12 120-12V1200H0z" fill="url(#mer)"/>
+  <g fill="none" stroke="#F4FAFC" stroke-width="4" stroke-linecap="round" opacity=".6">
+    <path d="M60 1070q18-12 36 0t36 0"/><path d="M300 1110q18-12 36 0t36 0"/><path d="M460 1060q18-12 36 0t36 0"/>
+  </g>
+
+  <!-- Mouettes -->
+  <g fill="none" stroke="#063B5C" stroke-width="4" stroke-linecap="round" opacity=".5">
+    <path d="M150 600q12-12 24 0q12-12 24 0"/><path d="M200 650q8-8 16 0q8-8 16 0"/>
+  </g>
+</svg>

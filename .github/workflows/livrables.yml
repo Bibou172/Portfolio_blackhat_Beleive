@@ -38,6 +38,13 @@ jobs:
       - name: Backend — installation & tests
         if: always()
         working-directory: backend
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          MONGO_DB: ${{ secrets.MONGO_DB }}
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USER: ${{ secrets.NEO4J_USER }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          CORS_ORIGINS: http://localhost:5173
         run: |
           uv sync
           uv run pytest -q

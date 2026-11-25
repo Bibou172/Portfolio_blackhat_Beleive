@@ -1,0 +1,277 @@
+/* --- Barre du haut --------------------------------------------------------- */
+.top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  pointer-events: none;
+}
+
+.top > * {
+  pointer-events: auto;
+}
+
+.left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.classicBtn[aria-pressed="true"] {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--night);
+  font-weight: 700;
+}
+
+.offline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 36px;
+  padding: 0.3rem 0.8rem;
+  border: 2px solid var(--orange);
+  border-radius: 6px;
+  background: rgba(14, 8, 32, 0.85);
+  color: var(--orange);
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  animation: blink 1.6s steps(2, start) infinite;
+}
+
+.offline::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+@keyframes blink {
+  50% {
+    border-color: rgba(255, 159, 69, 0.35);
+  }
+}
+
+.player {
+  display: grid;
+  justify-items: end;
+  gap: 0.15rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(14, 8, 32, 0.78);
+  backdrop-filter: blur(6px);
+  text-align: right;
+}
+
+.name {
+  font-family: var(--f-title);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  transform: skewX(-6deg);
+}
+
+.stars {
+  color: var(--yellow);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 8px rgba(255, 209, 102, 0.6);
+}
+
+.dispo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--teal);
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.dispo::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--teal);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 560px) {
+  .top {
+    padding: 0.6rem 0.75rem;
+  }
+  .player {
+    max-width: 52vw;
+    padding: 0.45rem 0.65rem;
+  }
+  .name {
+    font-size: 1rem;
+  }
+  .skillLabel {
+    display: none;
+  }
+  .dispo {
+    font-size: 0.6rem;
+  }
+}
+
+/* --- Navigation du mode classique ------------------------------------------ */
+.classicNav {
+  position: relative;
+  z-index: 45;
+  margin: var(--hud-h) auto calc(-1 * var(--hud-h));
+  max-width: 1180px;
+  padding: 0 1.25rem;
+}
+
+.classicNav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  margin: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(14, 8, 32, 0.85);
+}
+
+/* --- Mini-carte ------------------------------------------------------------ */
+.minimap {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  width: 136px;
+  height: 136px;
+  pointer-events: none;
+}
+
+.minimapSvg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5));
+}
+
+.minimapLabel {
+  position: absolute;
+  left: 50%;
+  bottom: -0.2rem;
+  translate: -50% 0;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  background: var(--night);
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.playerDot {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* Sur les sections (et les petits écrans) : version compacte pour ne pas masquer le contenu. */
+.minimapCompact {
+  width: 84px;
+  height: 84px;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  opacity: 0.9;
+}
+
+.minimapCompact .minimapLabel {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .minimap {
+    width: 84px;
+    height: 84px;
+    left: 0.6rem;
+    bottom: 0.6rem;
+  }
+}
+
+/* --- Transition plein écran (wipe diagonal) -------------------------------- */
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: all;
+  overflow: hidden;
+}
+
+.wipePanel {
+  position: absolute;
+  inset: -10% -30%;
+  transform: skewX(-14deg);
+  background:
+    repeating-linear-gradient(90deg, rgba(14, 8, 32, 0) 0 60px, rgba(14, 8, 32, 0.12) 60px 62px),
+    linear-gradient(120deg, var(--pink), var(--orange) 45%, var(--violet));
+}
+
+.wipeContent {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  text-align: center;
+  color: var(--night);
+}
+
+.wipeTitle {
+  font-size: clamp(2.4rem, 9vw, 5.5rem);
+  color: var(--night);
+  text-shadow: 0 4px 0 rgba(255, 244, 232, 0.45);
+}
+
+.wipeNeon {
+  font-family: var(--f-neon);
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: var(--night);
+}
+
+.wipeDots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.wipeDots span {
+  width: 12px;
+  height: 12px;
+  background: var(--night);
+  transform: rotate(45deg);
+  animation: pulse 0.9s ease-in-out infinite;
+}
+
+.wipeDots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.wipeDots span:nth-child(3) {
+  animation-delay: 0.3s;
+}

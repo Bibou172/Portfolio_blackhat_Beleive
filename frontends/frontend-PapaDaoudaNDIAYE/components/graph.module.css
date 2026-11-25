@@ -1,0 +1,160 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(240px, 1fr);
+  gap: 1.6rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.radarWrap {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1b1040 0%, #120a2c 60%, #0e0820 100%);
+  border: 2px solid rgba(178, 107, 255, 0.55);
+  box-shadow:
+    0 0 40px rgba(178, 107, 255, 0.25),
+    inset 0 0 60px rgba(14, 8, 32, 0.9);
+  overflow: hidden;
+}
+
+.sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(178, 107, 255, 0.45), rgba(178, 107, 255, 0) 80deg, transparent);
+  animation: spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ring {
+  fill: none;
+  stroke: rgba(201, 184, 232, 0.18);
+  stroke-dasharray: 6 10;
+}
+
+.link {
+  stroke: rgba(201, 184, 232, 0.35);
+  stroke-width: 2;
+  transition:
+    opacity 0.25s,
+    stroke 0.25s,
+    stroke-width 0.25s;
+}
+
+.linkDim {
+  opacity: 0.1;
+}
+
+.linkOn {
+  stroke: var(--yellow);
+  stroke-width: 5;
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.9));
+}
+
+.node {
+  cursor: pointer;
+  transition: opacity 0.25s;
+}
+
+.node:focus {
+  outline: none;
+}
+
+.node:focus-visible .dot {
+  stroke: var(--yellow);
+  stroke-width: 6;
+}
+
+.nodeDim {
+  opacity: 0.25;
+}
+
+.dot {
+  stroke: #0e0820;
+  stroke-width: 3;
+}
+
+.nodeOn .dot {
+  stroke: #fff4e8;
+  stroke-width: 5;
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+.label {
+  fill: var(--text);
+  font-family: var(--f-mono);
+  font-size: 19px;
+  paint-order: stroke;
+  stroke: #0e0820;
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.side {
+  display: grid;
+  gap: 1rem;
+}
+
+.box {
+  padding: 1.2rem;
+}
+
+.legend {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.neighbors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0.6rem 0 0;
+  list-style: none;
+}
+
+.chipBtn {
+  cursor: pointer;
+}
+
+.textVersion ul {
+  padding-left: 1.2rem;
+}
