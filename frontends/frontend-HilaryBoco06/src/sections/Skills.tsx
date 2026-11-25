@@ -40,7 +40,8 @@ function CarteCompetence({ c, stat }: { c: Competence; stat?: StatCompetence }) 
 
 export default function Skills() {
   const { data: p } = useProfil();
-  const stats = useRessource(() => getStatsCompetences(), []);
+  const stats = useRessource(() => getStatsCompetences(), []); // R3 : toutes les compétences
+  const topN = useRessource(() => getStatsCompetences(5), []); // R6 : top 5 (?limit=5)
   const [domaine, setDomaine] = useState<string | null>(null);
   const filtre = useRessource(() => (domaine ? getCompetencesDomaine(domaine) : Promise.resolve({ data: null, source: "aucune" as const })), [domaine]);
 
@@ -48,7 +49,7 @@ export default function Skills() {
   if (!p || p.competences.length === 0) return null;
 
   const domaines = trierDomaines(p.competences.map((c) => c.domaine));
-  const top = (stats.data ?? []).slice(0, 5); // R6 : même tri que R3, limité à 5
+  const top = topN.data ?? [];
   const slugsFiltres = domaine && filtre.data ? new Set(filtre.data.items.map((i) => i.skill_slug)) : null;
   const visibles = domaine ? [domaine] : domaines;
 

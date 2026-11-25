@@ -31,16 +31,61 @@ async function avecRepli<T>(appel: () => Promise<T>, repli: () => T | null): Pro
 
 type Liste<T> = { items: T[]; total: number };
 
+/**
+ * R2 et R8 : le contrat (API_ROUTES.md) prévoit {items, total} ; l'implémentation actuelle renvoie une liste brute.
+ * On accepte les deux formats ; toute autre réponse déclenche le repli sur data/.
+ */
+function versListe<T>(reponse: T[] | Liste<T>): T[] {
+  if (Array.isArray(reponse)) return reponse;
+  if (reponse && Array.isArray(reponse.items)) return reponse.items;
+  throw new Error("Format de liste inattendu");
+}
+
+/**
+ * Candidat demandé à R1, R2 et R8 : leur paramètre candidat_slug vaut « exemple-candidat » par défaut,
+ * un candidat que le seed n'insère pas. Paramètre sans effet si le backend n'en a plus besoin.
+ */
+const CANDIDAT_SLUG =
+  (import.meta.env.VITE_CANDIDAT_SLUG as string | undefined)?.trim() || profilLocal()?.candidat_slug || "hilary-boco";
+
+/**
+ * Les modèles de l'API suppriment les champs hors ARCHITECTURE.md (téléphone, points forts, études de cas) :
+ * on les complète avec data/ quand il s'agit du même candidat ou du même projet.
+ */
+function completerProfil(api: Profil): Profil {
+  const local = profilLocal();
+  if (!local || local.candidat_slug !== api.candidat_slug) return api;
+  return {
+    ...api,
+    telephone: api.telephone ?? local.telephone,
+    email_personnel: api.email_personnel ?? local.email_personnel,
+    recherche: api.recherche ?? local.recherche,
+    points_forts: api.points_forts ?? local.points_forts,
+  };
+}
+
+function completerProjet(api: Projet): Projet {
+  const local = projetsLocaux().find((p) => p.projet_slug === api.projet_slug);
+  if (!local) return api;
+  const champs = ["contexte", "probleme", "role", "fonctionnalites", "decisions", "images", "metriques"] as const;
+  const complements = Object.fromEntries(champs.filter((c) => api[c] === undefined && local[c] !== undefined).map((c) => [c, local[c]]));
+  return { ...api, ...complements };
+}
+
 // ── R1 ──
 export function getProfil() {
-  return avecRepli(() => apiGet<Profil>("/api/profil"), profilLocal);
+  return avecRepli(
+    async () => completerProfil(await apiGet<Profil>(`/api/profil?candidat_slug=${encodeURIComponent(CANDIDAT_SLUG)}`)),
+    profilLocal,
+  );
 }
 
 // ── R8 ──
 export function getExperiences(lieu?: string) {
-  const q = lieu ? `?lieu=${encodeURIComponent(lieu)}` : "";
+  const q = new URLSearchParams({ candidat_slug: CANDIDAT_SLUG });
+  if (lieu) q.set("lieu", lieu);
   return avecRepli(
-    async () => (await apiGet<Liste<Experience>>(`/api/experiences${q}`)).items,
+    async () => versListe(await apiGet<Experience[] | Liste<Experience>>(`/api/experiences?${q}`)),
     () => {
       const profil = profilLocal();
       if (!profil) return null;
@@ -53,10 +98,10 @@ export function getExperiences(lieu?: string) {
 
 // ── R2 ──
 export function getProjets(competence?: string) {
-  const q = new URLSearchParams({ page: "1", size: "100" });
+  const q = new URLSearchParams({ page: "1", size: "100", candidat_slug: CANDIDAT_SLUG });
   if (competence) q.set("competence", competence);
   return avecRepli(
-    async () => (await apiGet<Liste<Projet>>(`/api/projets?${q}`)).items,
+    async () => versListe(await apiGet<Projet[] | Liste<Projet>>(`/api/projets?${q}`)).map(completerProjet),
     () => {
       const projets = projetsLocaux();
       if (!projets.length && !profilLocal()) return null;
@@ -69,7 +114,7 @@ export function getProjets(competence?: string) {
 
 export function getProjet(slug: string) {
   return avecRepli(
-    () => apiGet<Projet>(`/api/projets/${encodeURIComponent(slug)}`),
+    async () => completerProjet(await apiGet<Projet>(`/api/projets/${encodeURIComponent(slug)}`)),
     () => projetsLocaux().find((p) => p.projet_slug === slug) ?? null,
   );
 }
@@ -78,7 +123,7 @@ export function getProjet(slug: string) {
 export function getStatsCompetences(limit?: number) {
   const q = limit ? `?limit=${limit}` : "";
   return avecRepli(
-    async () => (await apiGet<Liste<StatCompetence>>(`/api/stats/competences${q}`)).items,
+    async () => versListe(await apiGet<StatCompetence[] | Liste<StatCompetence>>(`/api/stats/competences${q}`)),
     () => {
       const profil = profilLocal();
       if (!profil) return null;

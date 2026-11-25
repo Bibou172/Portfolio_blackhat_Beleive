@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUp, Compass, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { useProfil } from "@/lib/ProfilContext";
-import { nomComplet } from "@/lib/format";
+import { emailsDe, nomComplet } from "@/lib/format";
 import { SITE } from "@/lib/site";
 import { LIENS_NAV } from "./Navbar";
 
@@ -40,13 +40,13 @@ export default function Footer() {
         <div>
           <p className="surtitre !text-lagon-400">Me retrouver</p>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {p?.email && (
-              <li>
-                <a href={`mailto:${p.email}`} className="inline-flex items-center gap-2 text-sand-200/75 hover:text-ecume-50">
-                  <Mail className="h-4 w-4" aria-hidden /> {p.email}
+            {emailsDe(p).map((email) => (
+              <li key={email}>
+                <a href={`mailto:${email}`} className="inline-flex items-center gap-2 text-sand-200/75 hover:text-ecume-50">
+                  <Mail className="h-4 w-4" aria-hidden /> {email}
                 </a>
               </li>
-            )}
+            ))}
             {p?.telephone && (
               <li>
                 <a href={`tel:${p.telephone.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 text-sand-200/75 hover:text-ecume-50">
